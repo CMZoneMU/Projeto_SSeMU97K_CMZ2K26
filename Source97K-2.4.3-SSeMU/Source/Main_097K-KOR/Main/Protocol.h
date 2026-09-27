@@ -154,6 +154,8 @@ struct PMSG_CHARACTER_INFO_RECV
 	DWORD ViewDexterity;
 	DWORD ViewVitality;
 	DWORD ViewEnergy;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Add AccountLevel to Character Info
+	DWORD ViewAccountLevel;
 };
 
 struct PMSG_CHARACTER_REGEN_RECV
@@ -249,6 +251,8 @@ struct PMSG_NEW_CHARACTER_INFO_RECV
 	DWORD ViewDexterity;
 	DWORD ViewVitality;
 	DWORD ViewEnergy;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Add AccountLevel to New Character Info
+	DWORD ViewAccountLevel;
 };
 
 struct PMSG_NEW_CHARACTER_CALC_RECV

@@ -24,7 +24,11 @@ UPDATE CMZ 00 (3.0.0) / Correções CMZone 29-08-26
 * Foi corrigido o bug nos comandos /reset e /mreset em que o nível do personagem aumentava (+1) ao invés de voltar para o Level 1. [97KOR]
 * Foi implementado o Sistema Lua de forma estável e otimizada (apenas funções da 97k), atualizado e rodando 100% sem erros e sem crashes. [GameServer][97KOR]
  
- 
+UPDATE CMZ 14 (3.1.4) 26-09-26:
+* Exibicao de Resets e Tipo de Conta VIP na Janela de Status (Tecla C): implementada exibicao visual alinhada com o bloco de Point na janela de status do personagem ("C"). Exibe a contagem de Resets (Resets: %d) e o tipo de conta (Free, Vip, Vip Premium, Vip Events) com centralizacao dinamica por resolucao, tipografia em negrito (g_hFontBold), cor azul padronizada com Spare Points (Color4f: 100, 150, 255, 255), fundo translucido suave nativo (SetBackgroundTextColor = 0x80000000) e margens uniformes de 3px. Documentacao tecnica completa gerada em Custom_MarkDowns/Custom_Texto_Visual_na_Janela_de_Status_C.md. [Main.dll][PrintPlayer.h/.cpp][Client97K][Custom_MarkDowns]
+* Sincronizacao de Nivel de Conta (ViewAccountLevel) entre GameServer e Client: inclusao do campo ViewAccountLevel nas estruturas binarias PMSG_CHARACTER_INFO_SEND/RECV (0xF3, 0x03) e PMSG_NEW_CHARACTER_INFO_SEND/RECV (0xF3, 0xE0), garantindo sincronizacao em tempo real do nivel VIP no login do personagem e em atualizacoes dinamicas via JoinServer. [GameServer][Main.dll][Protocol.h/.cpp][DSProtocol.cpp][JSProtocol.cpp][97KOR]
+* Correcao do Banner/Logo Superior nos Emuladores (GameServer, DataServer, JoinServer e ConnectServer): substituicao do bitmap dummy zerado pela arte oficial de 594x80 (TOPBAR.bmp e preservacao de TOPBAR.psd em Source/Media), atualizacao da rotina WM_PAINT com suporte a secao DIB (LR_CREATEDIBSECTION), fallback para LoadBitmap e liberacao correta de recursos graficos com DeleteObject/DeleteDC para eliminar vazamento de memoria GDI. [GameServer][DataServer][JoinServer][ConnectServer][TOPBAR.bmp][TOPBAR.psd][97KOR]
+  
 UPDATE CMZ 13 (3.1.3) 26-09-26 / SSeMU UPDATE 98 (2.5.7 ~ 2.5.7-1):
 * Criptografia e Descriptografia de HardwareId: implementada rotina dinamica XOR (PacketArgumentEncrypt / Decrypt) para transmissao segura do HardwareId na conexao entre Client Main e GameServer, prevenindo forjamento de identidade de maquina. [GameServer][Main.dll][ConnectionManager.cpp][Protocol.cpp][97KOR]
 * HardwareId Unico por Cliente: geracao de identificador unico de 44 caracteres combinando memoria fisica instalada (GlobalMemoryStatusEx) e parametros de arquitetura do processador, eliminando IDs duplicados entre clientes distintos. [Main.dll][Util.cpp][Client97K][97KOR]
@@ -36,7 +40,6 @@ UPDATE CMZ 13 (3.1.3) 26-09-26 / SSeMU UPDATE 98 (2.5.7 ~ 2.5.7-1):
 * Sincronizacao da Estrutura CUSTOM_MAP_INFO: alinhamento do campo MusicPath[100] na struct entre GetMainInfo e Main.dll, eliminando a divergencia de 8.000 bytes e o erro [Error] ReadMainFile #3: Unexpected size for the main file. [Main.dll][GetMainInfo][CustomMap.h][ServerInfo.cmz][Client97K]
 * Atualizacao de Versao de Titulo e Compilacao Release: macros GAMESERVER_VERSION e JOINSERVER_VERSION atualizadas para (Update 98 - Ver: 2.5.7) e flag /FS adicionada aos projetos para builds sem erro de PDB. [GameServer][JoinServer][stdafx.h][GameServer.vcxproj][JoinServer.vcxproj][Main.vcxproj][97KOR]
  
- 
 UPDATE CMZ 12 (3.1.2) 22-09-26 / SSeMU UPDATE 97 (2.5.5 / 2.5.6):
 * Configuracao de Experiencia em Attack (/attack e /offattack): adicionado suporte completo as taxas CustomAttackExperienceRate_AL0~3 e CustomAttackOfflineExperienceRate_AL0~3 em GameServer\DATA\GameServerInfo - Custom.dat com aplicacao de multiplicador percentual de experiencia solo e em party. [GameServer][CustomAttack.h/.cpp][ObjectManager.cpp][GameServerInfo - Custom.dat][97KOR]
 * Mensagens de Notificacao no Message.txt: suporte as mensagens 750 a 759 para alertas e notificacoes de comando de ataque e utilitarios. [GameServer][Data\Message.txt][97KOR]
@@ -44,7 +47,6 @@ UPDATE CMZ 12 (3.1.2) 22-09-26 / SSeMU UPDATE 97 (2.5.5 / 2.5.6):
 * Encriptacao de Scripts LUA e Require: implementada funcao LuaRequire com suporte a leitura de arquivos criptografados com header SCRIPT_HEADER e chave XOR dinamica, com fallback transparente para scripts convencionais. [GameServer][LuaFunction.cpp][ScriptLoader.cpp][97KOR]
 * Suporte a Musica Customizada em Mapas: adicionado campo MusicPath na struct CUSTOM_MAP_INFO no GetMainInfo e Main.dll, com geracao binaria em ServerInfo.sse e reproducao automatica de MP3 ao entrar em mapas custom. [Main.dll][GetMainInfo][CustomMap.h/.cpp][Map.cpp][Client97K]
 * Correcao de Cores em Danos: corrigido bug de interferencia de atributos de dano duplo (0x40) e combo (0x80) que causavam alteracao incorreta nas cores visuais de dano Excellent, Critical e Ignore no cliente. [GameServer][User.h][Attack.cpp][Protocol.cpp][97KOR]
-
 
 UPDATE CMZ 11 (3.1.1) 21-09-26 / SSeMU UPDATE 96 (2.5.4):
 * Novo Arquivo e Sistema de Requisitos de Comandos (CommandRequirement): criado Data\CommandRequirement.txt e modulo CommandRequirement.h/.cpp adaptado para 4 classes 97k (DW, DK, FE, MG), suportando requisitos de nivel, resets, itens com contagem e consumo no inventario, mapas, horarios, dias da semana e mensagens personalizadas de falha. [GameServer][CommandRequirement.h/.cpp][CommandManager.cpp][ServerInfo.cpp][CommandRequirement.txt][97KOR]

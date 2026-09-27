@@ -1936,6 +1936,8 @@ void GCNewCharacterInfoSend(LPOBJ lpObj) // OK
 	pMsg.ViewDexterity = lpObj->Dexterity;
 	pMsg.ViewVitality = lpObj->Vitality;
 	pMsg.ViewEnergy = lpObj->Energy;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Set AccountLevel in New Character Info
+	pMsg.ViewAccountLevel = (DWORD)(lpObj->AccountLevel);
 
 	DataSend(lpObj->Index,(BYTE*)&pMsg,pMsg.header.size);
 

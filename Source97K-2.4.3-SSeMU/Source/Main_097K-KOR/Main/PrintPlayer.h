@@ -25,10 +25,14 @@ void PrintDamageOnScreenHP(float Position[3], int Value, float Color[3], float s
 void PrintBarExperience1(float a, float b, float c, float d);
 void PrintBarExperience2(float a, float b, DWORD c, float d, float e);
 void CalculateAttackSpeed(DWORD This);
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Character Status Window Reset and VIP Box
+int PrintPlayerRenderLevelText(int iPos_x, int iPos_y, char *pszText, int iBoxWidth, int iSort, SIZE *lpTextSize);
 
 extern DWORD ViewIndex;
 extern DWORD ViewLevel;
 extern DWORD ViewReset;
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Add ViewAccountLevel variable
+extern DWORD ViewAccountLevel;
 extern DWORD ViewPoint;
 extern DWORD ViewCurHP;
 extern DWORD ViewMaxHP;
