@@ -122,6 +122,9 @@ void CItemBag::Load(char* path) // OK
 
 					info.NewOption = lpMemScript->GetAsNumber();
 
+					// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Leitura de SetOption para ItemBag Old
+					info.SetOption = lpMemScript->GetAsNumber();
+
 					// Update 88 2.4.6 -> 97K - Logs de auditoria para itens inválidos em Bags
 					if(gItemManager.CheckItemIndex(info.ItemIndex) == 0)
 					{

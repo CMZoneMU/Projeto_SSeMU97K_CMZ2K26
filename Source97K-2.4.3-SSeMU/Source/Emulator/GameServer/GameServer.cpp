@@ -676,6 +676,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam) // 
 					gServerInfo.ReadCharacterInfo();
 					gServerInfo.ReadCommandInfo();
 					gServerInfo.ReadCommonInfo();
+					gServerInfo.ReadLangInfo();
 					gServerInfo.ReadCustomInfo();
 					gServerInfo.ReadEventInfo();
 					gServerInfo.ReadEventItemBagInfo();
@@ -708,6 +709,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam) // 
 					break;
 				case IDM_RELOAD_RELOADCOMMON:
 					gServerInfo.ReadCommonInfo();
+					gServerInfo.ReadLangInfo();
 					LogAdd(LOG_BLUE,"[ServerInfo] Common reloaded successfully");
 					break;
 				case IDM_RELOAD_RELOADCUSTOM:

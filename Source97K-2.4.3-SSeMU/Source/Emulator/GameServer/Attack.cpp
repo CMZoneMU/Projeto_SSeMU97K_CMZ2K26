@@ -85,6 +85,12 @@ bool CAttack::Attack(LPOBJ lpObj,LPOBJ lpTarget,CSkill* lpSkill,bool send,BYTE f
 		}
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Correcao da checagem de ataque durante teletransporte
+	if(gServerInfo.m_TeleportAttackCheck != 0 && lpObj->Teleport != 0)
+	{
+		return 0;
+	}
+
 	if(lpTarget->Type == OBJECT_NPC || lpTarget->Live == 0 || lpTarget->State != OBJECT_PLAYING || lpTarget->Teleport != 0)
 	{
 		return 0;

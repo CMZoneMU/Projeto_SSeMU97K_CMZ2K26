@@ -101,6 +101,9 @@ void CServerInfo::ReadInit() // OK
 
 	this->ReadCommonInfo();
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Leitura das configuracoes de multi-idioma
+	this->ReadLangInfo();
+
 	this->ReadCustomInfo();
 
 	this->ReadEventInfo();
@@ -166,8 +169,6 @@ void CServerInfo::ReadCommonInfo() // OK
 	gMapManager.Load(gPath.GetFullPath("MapManager.txt"));
 
 	gMapRateInfo.Load(gPath.GetFullPath("MapRateInfo.txt"));
-
-	gMessage.Load(gPath.GetFullPath("Message.txt"));
 }
 
 void CServerInfo::ReadCustomInfo() // OK
@@ -370,8 +371,6 @@ void CServerInfo::ReadUtilInfo() // OK
 	gFilter.Load(gPath.GetFullPath("Util\\Filter.txt"));
 
 	gGameMaster.Load(gPath.GetFullPath("Util\\GameMaster.txt"));
-
-	gNotice.Load(gPath.GetFullPath("Util\\Notice.txt"));
 
 	gResetLimit.Load(gPath.GetFullPath("Util\\ResetLimit.txt"));
 
@@ -1692,4 +1691,32 @@ void CServerInfo::ReadSkillInfo(char* section,char* path) // OK
 	this->m_MagicDamageImmunityTimeConstA = GetPrivateProfileInt(section,"MagicDamageImmunityTimeConstA",0,path);
 
 	this->m_PhysiDamageImmunityTimeConstA = GetPrivateProfileInt(section,"PhysiDamageImmunityTimeConstA",0,path);
+}
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Sistema de multi-idioma (ServerLang)
+void CServerInfo::ReadLangInfo()
+{
+	this->ReadLangInfo("GameServerInfo",".\\Data\\GameServerInfo - Common.dat");
+
+	switch (this->m_ServerLang)
+	{
+		case 1:
+			gMessage.Load(gPath.GetFullPath("Lang\\Spn\\Message.txt"));
+			gNotice.Load(gPath.GetFullPath("Lang\\Spn\\Notice.txt"));
+			break;
+		case 2:
+			gMessage.Load(gPath.GetFullPath("Lang\\Por\\Message.txt"));
+			gNotice.Load(gPath.GetFullPath("Lang\\Por\\Notice.txt"));
+			break;
+		default:
+			gMessage.Load(gPath.GetFullPath("Lang\\Eng\\Message.txt"));
+			gNotice.Load(gPath.GetFullPath("Lang\\Eng\\Notice.txt"));
+			break;
+	}
+}
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Leitura de ServerLang
+void CServerInfo::ReadLangInfo(char* section,char* path)
+{
+	this->m_ServerLang = GetPrivateProfileInt(section,"ServerLang",0,path);
 }
