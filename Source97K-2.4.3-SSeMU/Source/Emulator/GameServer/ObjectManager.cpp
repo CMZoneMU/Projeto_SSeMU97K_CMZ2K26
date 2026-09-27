@@ -480,8 +480,6 @@ void CObjectManager::ObjectMonsterAndMsgProc() // OK
 			else
 			{
 				gObjSkillNovaCheckTime(&gObj[n]);
-				// Update 91 2.4.9 -> 97K - Verificacao individual de speed hack de movimento
-				gHackMoveSpeedCheck.MainProc(&gObj[n]);
 				gObjectManager.ObjectMsgProc(&gObj[n]);
 			}
 		}
@@ -493,6 +491,8 @@ void CObjectManager::ObjectMonsterAndMsgProc() // OK
 	{
 		gCustomAttack.MainProc(&gObj[n]);
 		gCustomPick.MainProc(&gObj[n]);
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Processamento de MoveHack em usuarios conectados
+		gHackMoveSpeedCheck.MainProc(&gObj[n]);
 	}
 
 	for(int n=0;n < MAX_OBJECT;n++)

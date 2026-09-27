@@ -1097,7 +1097,8 @@ bool gObjCheckTeleportArea(int aIndex,int x,int y) // OK
 {
 	LPOBJ lpObj = &gObj[aIndex];
 
-	if(lpObj->Live == 0)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Validacao de teletransporte em andamento
+	if(lpObj->Live == 0 || lpObj->Teleport != 0)
 	{
 		return 0;
 	}

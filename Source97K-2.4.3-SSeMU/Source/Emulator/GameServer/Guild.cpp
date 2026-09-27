@@ -142,6 +142,9 @@ void CGuild::DGGuildMemberDelRecv(SDHP_GUILD_MEMBER_DEL_RECV* lpMsg) // OK
 	if(lpMsg->result == 1)
 	{
 		gGuildManager.DelMember(lpMsg->Member);
+
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Atualizacao da lista do Master ao remover membro
+		this->GuildMasterUpdate(lpMsg->Name);
 	}
 
 	LPOBJ lpObj = gObjFind(lpMsg->Member);
@@ -1401,6 +1404,22 @@ void CGuild::DataSendToAll(GUILD_INFO* lpGuild,BYTE* lpMsg,int size) // OK
 			{
 				DataSend(lpGuild->Member[n].Index,lpMsg,size);
 			}
+		}
+	}
+}
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Atualizacao da lista de membros para o Master da Guild
+void CGuild::GuildMasterUpdate(char* Name)
+{
+	GUILD_INFO* lpGuild = gGuildManager.GetGuild(Name);
+
+	if(lpGuild != 0)
+	{
+		LPOBJ lpMaster = gObjFind(lpGuild->Master);
+
+		if(lpMaster != 0)
+		{
+			this->CGGuildListRecv(lpMaster->Index);
 		}
 	}
 }

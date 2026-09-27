@@ -350,6 +350,8 @@ public:
 	int gObjGuildWarMasterClose(LPOBJ lpObj);
 	void NoticeSendToAll(GUILD_INFO* lpGuild,int type,char* message,...);
 	void DataSendToAll(GUILD_INFO* lpGuild,BYTE* lpMsg,int size);
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Atualizacao da lista de membros para o Master da Guild
+	void GuildMasterUpdate(char* Name);
 };
 
 extern CGuild gGuild;

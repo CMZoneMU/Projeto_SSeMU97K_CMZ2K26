@@ -14,6 +14,7 @@ ServerPort = 55900
 ServerVersion = 1.02.00
 ServerSerial = PoweredSetecSoft
 ServerMaxUserNumber = 100
+ServerLang = 0
 
 ;==================================================
 ; MHP Settings

@@ -20,6 +20,8 @@ public:
 	void ReadCharacterInfo();
 	void ReadCommandInfo();
 	void ReadCommonInfo();
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Sistema de multi-idioma (ServerLang)
+	void ReadLangInfo();
 	void ReadCustomInfo();
 	void ReadEventInfo();
 	void ReadEventItemBagInfo();
@@ -40,6 +42,8 @@ public:
 	void ReadCharacterInfo(char* section,char* path);
 	void ReadCommandInfo(char* section,char* path);
 	void ReadCommonInfo(char* section,char* path);
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Leitura de ServerLang
+	void ReadLangInfo(char* section,char* path);
 	void ReadEventInfo(char* section,char* path);
 	void ReadHackInfo(char* section,char* path);
 	void ReadItemInfo(char* section,char* path);
@@ -47,6 +51,8 @@ public:
 public:
 	char m_ServerName[32];
 	int m_ServerCode;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 99 (2.5.8) - Opcao de idioma do servidor
+	int m_ServerLang;
 	int m_ServerLock;
 	int m_ServerPort;
 	char m_ServerMutex[32];
