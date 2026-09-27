@@ -6,6 +6,8 @@
 DWORD ViewIndex = 0;
 DWORD ViewLevel = 0;
 DWORD ViewReset = 0;
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Initialize ViewAccountLevel
+DWORD ViewAccountLevel = 0;
 DWORD ViewPoint = 0;
 DWORD ViewCurHP = 0;
 DWORD ViewMaxHP = 0;
@@ -54,6 +56,9 @@ void InitPrintPlayer()
 
 	SetCompleteHook(0xE8, 0x004BD00C, &PrintPlayerViewBP2);
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Hook Character Status Window Level Text
+	SetCompleteHook(0xE8, 0x004ED3A5, &PrintPlayerRenderLevelText);
+
 	SetCompleteHook(0xE8, 0x004ED48F, &PrintPlayerViewExperience); //case 201: "Exp: %u/%u"
 
 	SetCompleteHook(0xE8, 0x004BFCD3, &PrintPlayerViewExperience); //case 357: "Exp: %u/%u"
@@ -93,6 +98,66 @@ void InitPrintPlayer()
 	SetCompleteHook(0xE8, 0x004BFC5B, &PrintBarExperience2);
 
 	SetCompleteHook(0xE9, 0x0047DD80, &CalculateAttackSpeed);
+}
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Render Reset and VIP Text in Character Status Window
+int PrintPlayerRenderLevelText(int iPos_x, int iPos_y, char *pszText, int iBoxWidth, int iSort, SIZE *lpTextSize)
+{
+	int result = RenderText(iPos_x, iPos_y, pszText, iBoxWidth, iSort, lpTextSize);
+
+	DWORD dwOldColor = SetTextColor;
+	DWORD dwOldBgColor = SetBackgroundTextColor;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Select bold font (g_hFontBold) to match Spare Points style
+	HFONT hOldFont = (HFONT)SelectObject(m_hFontDC, g_hFontBold);
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Soft black background opacity from WebZen DecIDA (0x80000000)
+	SetBackgroundTextColor = 0x80000000;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Match text color with Spare Points (Color4f: 100, 150, 255, 255)
+	SetTextColor = Color4f(100, 150, 255, 255);
+
+	char szReset[32];
+	wsprintf(szReset, "Resets: %d", ViewReset);
+
+	const char* pszAccountLevelName = "Free";
+	if (ViewAccountLevel == 1)
+	{
+		pszAccountLevelName = "Vip";
+	}
+	else if (ViewAccountLevel == 2)
+	{
+		pszAccountLevelName = "Vip Premium";
+	}
+	else if (ViewAccountLevel == 3)
+	{
+		pszAccountLevelName = "Vip Events";
+	}
+
+	char szVip[64];
+	wsprintf(szVip, "Tipo de Conta: %s", pszAccountLevelName);
+
+	SIZE sz1, sz2;
+	GetTextExtentPoint32A(m_hFontDC, szReset, lstrlenA(szReset), &sz1);
+	GetTextExtentPoint32A(m_hFontDC, szVip, lstrlenA(szVip), &sz2);
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Align center with Point text from WebZen DecIDA (Line 170751)
+	int iWindowX = iPos_x - 14;
+	int iPointBoxWidth = (80 * WindowWidth) / 640;
+	int iPointBoxX = iWindowX + 95;
+	int iPointCenterX = iPointBoxX + (iPointBoxWidth / 2);
+
+	int iMaxWidth = (sz1.cx > sz2.cx) ? sz1.cx : sz2.cx;
+	int iBoxWidthFinal = (iMaxWidth < iPointBoxWidth) ? iPointBoxWidth : (iMaxWidth + 4);
+
+	int iBoxX = iPointCenterX - (iBoxWidthFinal / 2);
+
+	RenderText(iBoxX, iPos_y - 1, szReset, iBoxWidthFinal, 1, NULL);
+	RenderText(iBoxX, iPos_y + 8, szVip, iBoxWidthFinal, 1, NULL);
+
+	SelectObject(m_hFontDC, hOldFont);
+	SetTextColor = dwOldColor;
+	SetBackgroundTextColor = dwOldBgColor;
+
+	return result;
 }
 
 void PrintDrawCircleHPMP(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)

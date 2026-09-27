@@ -317,6 +317,8 @@ void GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
 	ViewDexterity = lpMsg->ViewDexterity;
 	ViewVitality = lpMsg->ViewVitality;
 	ViewEnergy = lpMsg->ViewEnergy;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Set AccountLevel in Character Info
+	ViewAccountLevel = lpMsg->ViewAccountLevel;
 	ViewFruitPoint = lpMsg->FruitPoint;
 	ViewMaxFruitPoint = lpMsg->MaxFruitPoint;
 
@@ -390,6 +392,8 @@ void GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg)
 	ViewDexterity = lpMsg->ViewDexterity;
 	ViewVitality = lpMsg->ViewVitality;
 	ViewEnergy = lpMsg->ViewEnergy;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Set AccountLevel in New Character Info
+	ViewAccountLevel = lpMsg->ViewAccountLevel;
 	ViewExperience = lpMsg->Experience;
 	ViewNextExperience = lpMsg->NextExperience;
 }
