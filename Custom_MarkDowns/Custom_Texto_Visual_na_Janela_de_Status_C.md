@@ -1,7 +1,7 @@
-# UPDATE CMZ 14 (3.1.4) - Custom: Texto Visual na Janela de Status ("C")
+# UPDATE CMZ 15 (3.1.5) - Custom: Texto Visual na Janela de Status ("C")
 
 > **Documentação Técnica Oficial de Customização - CMZone / CMZ SSeMU 97k**  
-> **Versão do Pacote:** UPDATE CMZ 14 (3.1.4)  
+> **Versão do Pacote:** UPDATE CMZ 15 (3.1.5)  
 > **Status:** Implementado, Sincronizado e Validado no Cliente e Servidor  
 
 ---
