@@ -63,6 +63,9 @@
     <ClInclude Include="MathLib.h">
       <Filter>Util Files</Filter>
     </ClInclude>
+    <ClInclude Include="CustomChangeClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="CustomEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -214,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="MathLib.cpp">
       <Filter>Util Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomChangeClass.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CustomEffect.cpp">
       <Filter>Source Files</Filter>

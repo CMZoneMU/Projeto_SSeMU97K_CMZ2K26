@@ -65,6 +65,7 @@
     <ClInclude Include="CCRC32.H" />
     <ClInclude Include="ChaosMix.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="CustomChangeClass.h" />
     <ClInclude Include="CustomEffect.h" />
     <ClInclude Include="CustomFog.h" />
     <ClInclude Include="CustomItem.h" />
@@ -119,6 +120,7 @@
     <ClCompile Include="CCRC32.Cpp" />
     <ClCompile Include="ChaosMix.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="CustomChangeClass.cpp" />
     <ClCompile Include="CustomEffect.cpp" />
     <ClCompile Include="CustomFog.cpp" />
     <ClCompile Include="CustomItem.cpp" />

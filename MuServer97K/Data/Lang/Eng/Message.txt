@@ -541,4 +541,17 @@
    742     "Voce nao pode formar aliancas ate a conclusao da Guerra de Cerco."
    743     "So pode ser usado pelo Mestre de Guilda da guilda proprietaria."
    744     "O limite de misturas permitidas por dia foi alcancado."
+
+   // Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class System
+   760     "Class change system is disabled!"
+   761     "Invalid class selected!"
+   762     "You cannot change class at this moment!"
+   763     "Class change is exclusive to VIP players!"
+   764     "You need to be level %d or higher to change class!"
+   765     "You need %d Zen to change class!"
+   766     "You already belong to this class!"
+   767     "Unequip all items before changing class!"
+   768     "Class changed to %s successfully!"
+   769     "Use: /class <bk | sm | me | mg>"
+   770     "Invalid class '%s'! Use: bk, sm, me or mg"
 end
