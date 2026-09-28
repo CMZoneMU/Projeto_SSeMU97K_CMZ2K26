@@ -6,6 +6,7 @@
 #include "CommandManager.h"
 #include "ConnectionManager.h"
 #include "CustomAttack.h"
+#include "CustomChangeClass.h"
 #include "CustomHealthBar.h"
 #include "DefaultClassInfo.h"
 #include "DevilSquare.h"
@@ -260,6 +261,10 @@ void ProtocolCore(BYTE head,BYTE* lpMsg,int size,int aIndex,int encrypt,int seri
 					break;
 				case 0x30:
 					CGOptionDataRecv((PMSG_OPTION_DATA_RECV*)lpMsg,aIndex);
+					break;
+				// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class Request
+				case 0xE5:
+					gCustomChangeClass.CGChangeClassRecv((PMSG_CUSTOM_CHANGE_CLASS_REQ*)lpMsg, aIndex);
 					break;
 			}
 			break;

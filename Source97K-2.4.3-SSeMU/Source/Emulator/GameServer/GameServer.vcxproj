@@ -110,6 +110,7 @@
     <ClInclude Include="CustomArena.h" />
     <ClInclude Include="CustomAttack.h" />
     <ClInclude Include="CustomBuyVip.h" />
+    <ClInclude Include="CustomChangeClass.h" />
     <ClInclude Include="CustomDailyReward.h" />
     <ClInclude Include="CustomEventDrop.h" />
     <ClInclude Include="CustomGift.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="CustomArena.cpp" />
     <ClCompile Include="CustomAttack.cpp" />
     <ClCompile Include="CustomBuyVip.cpp" />
+    <ClCompile Include="CustomChangeClass.cpp" />
     <ClCompile Include="CustomDailyReward.cpp" />
     <ClCompile Include="CustomEventDrop.cpp" />
     <ClCompile Include="CustomGift.cpp" />

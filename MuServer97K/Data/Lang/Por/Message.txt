@@ -532,9 +532,17 @@
 675     "Voce nao pode adquirir este plano!"
 676     "Voce deve ter pelo menos %d Dinheiro para adquirir este plano!"
 680     "Plano adquirido com sucesso!"
-740     "Voce nao pode entrar em uma guilda durante a Guerra de Cerco."
-741     "Voce nao pode excluir uma guilda durante a Guerra de Cerco."
-742     "Voce nao pode formar aliancas ate a conclusao da Guerra de Cerco."
-743     "So pode ser usado pelo Mestre de Guilda da guilda proprietaria."
-744     "O limite de misturas permitidas por dia foi alcancado."
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class System
+760     "O sistema de troca de classe esta desativado!"
+761     "Classe selecionada invalida!"
+762     "Voce nao pode trocar de classe neste momento!"
+763     "A troca de classe e exclusiva para jogadores VIP!"
+764     "Voce precisa ser nivel %d ou superior para trocar de classe!"
+765     "Voce precisa de %d Zen para trocar de classe!"
+766     "Voce ja pertence a esta classe!"
+767     "Desequipe todos os itens antes de trocar de classe!"
+768     "Classe alterada para %s com sucesso!"
+769     "Use: /class <bk | sm | me | mg>"
+770     "Classe '%s' invalida! Use: bk, sm, me ou mg"
 end
+

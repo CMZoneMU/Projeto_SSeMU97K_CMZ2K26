@@ -406,6 +406,9 @@
     <ClInclude Include="CustomBuyVip.h">
       <Filter>Custom</Filter>
     </ClInclude>
+    <ClInclude Include="CustomChangeClass.h">
+      <Filter>Custom</Filter>
+    </ClInclude>
     <ClInclude Include="CustomEventDrop.h">
       <Filter>Custom</Filter>
     </ClInclude>
@@ -790,6 +793,9 @@
       <Filter>Custom</Filter>
     </ClCompile>
     <ClCompile Include="CustomBuyVip.cpp">
+      <Filter>Custom</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomChangeClass.cpp">
       <Filter>Custom</Filter>
     </ClCompile>
     <ClCompile Include="CustomEventDrop.cpp">

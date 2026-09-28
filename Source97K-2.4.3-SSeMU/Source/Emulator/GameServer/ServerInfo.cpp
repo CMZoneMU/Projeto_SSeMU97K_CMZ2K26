@@ -13,6 +13,7 @@
 #include "CustomArena.h"
 #include "CustomAttack.h"
 #include "CustomBuyVip.h"
+#include "CustomChangeClass.h"
 #include "CustomDailyReward.h"
 #include "CustomEventDrop.h"
 #include "CustomGift.h"
@@ -178,6 +179,8 @@ void CServerInfo::ReadCustomInfo() // OK
 	gCustomAttack.ReadCustomAttackInfo("GameServerInfo",".\\Data\\GameServerInfo - Custom.dat");
 
 	gCustomBuyVip.ReadCustomBuyVipInfo("GameServerInfo",".\\Data\\GameServerInfo - Custom.dat");
+
+	gCustomChangeClass.ReadCustomChangeClassInfo("GameServerInfo",".\\Data\\GameServerInfo - Custom.dat");
 
 	gCustomEventDrop.ReadCustomEventDropInfo("GameServerInfo",".\\Data\\GameServerInfo - Custom.dat");
 

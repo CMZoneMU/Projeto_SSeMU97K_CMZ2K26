@@ -9,6 +9,7 @@
 #include "BonusManager.h"
 #include "CustomAttack.h"
 #include "CustomBuyVip.h"
+#include "CustomChangeClass.h"
 #include "CustomGift.h"
 #include "CustomPick.h"
 #include "DevilSquare.h"
@@ -403,6 +404,22 @@ void CCommandManager::ManagementCore(LPOBJ lpObj,char* message) // OK
 			break;
 		case COMMAND_CUSTOM_PICK_CLEAR:
 			gCustomPick.CommandCustomClear(lpObj);
+			break;
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class command dispatches
+		case COMMAND_CUSTOM_CHANGE_CLASS:
+			gCustomChangeClass.CommandChangeClass(lpObj, argument);
+			break;
+		case COMMAND_CUSTOM_CHANGE_CLASS_BK:
+			gCustomChangeClass.CommandChangeClassBK(lpObj, argument);
+			break;
+		case COMMAND_CUSTOM_CHANGE_CLASS_SM:
+			gCustomChangeClass.CommandChangeClassSM(lpObj, argument);
+			break;
+		case COMMAND_CUSTOM_CHANGE_CLASS_ME:
+			gCustomChangeClass.CommandChangeClassME(lpObj, argument);
+			break;
+		case COMMAND_CUSTOM_CHANGE_CLASS_MG:
+			gCustomChangeClass.CommandChangeClassMG(lpObj, argument);
 			break;
 		case COMMAND_GM_MOVE:
 			this->CommandGMMove(lpObj,argument);

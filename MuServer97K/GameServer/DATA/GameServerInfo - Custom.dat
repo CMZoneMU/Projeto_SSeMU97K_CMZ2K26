@@ -99,3 +99,15 @@ CustomPickMaxTime_AL0 = 0
 CustomPickMaxTime_AL1 = 0
 CustomPickMaxTime_AL2 = 0
 CustomPickMaxTime_AL3 = 0
+
+;==================================================
+; Custom Change Class Settings
+;==================================================
+CustomChangeClassSwitch = 1
+CustomChangeClassRequireVip = 1
+CustomChangeClassCheckItem = 1
+CustomChangeClassResetPoints = 1
+CustomChangeClassResetSkills = 1
+CustomChangeClassMinLevel = 1
+CustomChangeClassReqMoney = 0
+CustomChangeClassGateMove = 0

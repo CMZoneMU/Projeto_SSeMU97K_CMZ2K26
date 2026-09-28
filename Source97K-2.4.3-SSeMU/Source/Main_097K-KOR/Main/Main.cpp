@@ -2,6 +2,7 @@
 #include "Attack.h"
 #include "ChaosMix.h"
 #include "Camera.h"
+#include "CustomChangeClass.h"
 #include "Effect.h"
 #include "EventEntryLevel.h"
 #include "Font.h"
@@ -69,6 +70,11 @@ LRESULT CALLBACK KeyboardProc(int nCode,WPARAM wParam,LPARAM lParam) // OK
 			else if(gProtect.m_MainInfo.KeyCodeTrayModeSwitch != 0 && wParam == gProtect.m_MainInfo.KeyCodeTrayModeSwitch)
 			{
 				gTrayMode.Toggle();
+			}
+			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Toggle Custom Change Class window
+			else if(SceneFlag == 5 && !InputEnable && wParam == 'J')
+			{
+				gCustomChangeClass.Toggle();
 			}
 		}
 	}
@@ -190,6 +196,9 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 		InitEventEntryLevel();
 
 		InitWindowTime();
+
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Init Custom Change Class Interface
+		gCustomChangeClass.Init();
 
 		gSound.Init();
 
