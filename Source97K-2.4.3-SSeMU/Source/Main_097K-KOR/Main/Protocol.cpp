@@ -2,6 +2,7 @@
 #include "Attack.h"
 #include "Protocol.h"
 #include "ChaosMix.h"
+#include "CustomChangeClass.h"
 #include "GoldenArcher.h"
 #include "HackCheck.h"
 #include "HealthBar.h"
@@ -161,6 +162,10 @@ void __stdcall ProtocolCoreEx(BYTE head, BYTE* lpMsg)
 					break;
 				case 0xED:
 					GCItemValueListRecv((PMSG_ITEM_LIST_INFO_RECV*)lpMsg);
+					break;
+				// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class Response
+				case 0xE5:
+					gCustomChangeClass.GCChangeClassRecv((PMSG_CUSTOM_CHANGE_CLASS_ANS*)lpMsg);
 					break;
 				case 0xEF:
 					GCEventTimeListRecv((PMSG_EVENT_TIME_LIST_RECV*)lpMsg);

@@ -537,4 +537,17 @@
 742     "No puedes formar alianzas hasta la conclusion de Siege Warfare."
 743     "Solo puede ser usado por el Maestro de Guild de la guild propietaria."
 744     "Se ha alcanzado el limite de mezclas permitidas por dia."
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class System
+760     "El sistema de cambio de clase esta desactivado!"
+761     "Clase seleccionada invalida!"
+762     "No puedes cambiar de clase en este momento!"
+763     "El cambio de clase es exclusivo para jugadores VIP!"
+764     "Necesitas ser nivel %d o superior para cambiar de clase!"
+765     "Necesitas %d de Zen para cambiar de clase!"
+766     "Ya perteneces a esta clase!"
+767     "Desequipa todos los articulos antes de cambiar de clase!"
+768     "Clase cambiada a %s con exito!"
+769     "Usa: /class <bk | sm | me | mg>"
+770     "Clase '%s' invalida! Usa: bk, sm, me o mg"
 end
