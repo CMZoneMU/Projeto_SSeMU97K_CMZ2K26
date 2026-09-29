@@ -71,7 +71,7 @@ LRESULT CALLBACK KeyboardProc(int nCode,WPARAM wParam,LPARAM lParam) // OK
 			{
 				gTrayMode.Toggle();
 			}
-			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Toggle Custom Change Class window
+			// Update CMZ 17 (3.1.7) 28-09-26 - Toggle Custom Change Class window
 			else if(SceneFlag == 5 && !InputEnable && wParam == 'J')
 			{
 				gCustomChangeClass.Toggle();
@@ -197,7 +197,7 @@ extern "C" _declspec(dllexport) void _cdecl EntryProc()
 
 		InitWindowTime();
 
-		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Init Custom Change Class Interface
+		// Update CMZ 17 (3.1.7) 28-09-26 - Init Custom Change Class Interface
 		gCustomChangeClass.Init();
 
 		gSound.Init();

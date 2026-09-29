@@ -134,7 +134,7 @@ void JGAccountLevelRecv(SDHP_ACCOUNT_LEVEL_RECV* lpMsg) // OK
 		gNotice.GCNoticeSend(lpMsg->index,1,0,0,0,0,0,gMessage.GetMessage((155+gObj[lpMsg->index].AccountLevel)),gObj[lpMsg->index].AccountExpireDate);
 	}
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Synchronize AccountLevel with Client
+	// Update CMZ 15 (3.1.5) 26-09-26 - Synchronize AccountLevel with Client
 	if(gObj[lpMsg->index].Connected == OBJECT_ONLINE)
 	{
 		GCNewCharacterInfoSend(&gObj[lpMsg->index]);

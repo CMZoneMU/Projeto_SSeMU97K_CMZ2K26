@@ -1,4 +1,4 @@
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class System
+// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class System
 // CustomChangeClass.h: interface for the CCustomChangeClass class.
 //
 //////////////////////////////////////////////////////////////////////

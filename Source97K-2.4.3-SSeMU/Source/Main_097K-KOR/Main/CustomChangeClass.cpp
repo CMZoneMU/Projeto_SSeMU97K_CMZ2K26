@@ -1,4 +1,4 @@
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class Interface
+// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class Interface
 #include "stdafx.h"
 #include "CustomChangeClass.h"
 #include "Protect.h"
@@ -34,10 +34,10 @@ CCustomChangeClass::~CCustomChangeClass()
 
 void CCustomChangeClass::Init()
 {
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Hook Windows mouse update loop
+	// Update CMZ 17 (3.1.7) 28-09-26 - Hook Windows mouse update loop
 	SetCompleteHook(0xE8, 0x005254B2, &CCustomChangeClass::MyUpdateWindowsMouse);
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Hook Windows render loop
+	// Update CMZ 17 (3.1.7) 28-09-26 - Hook Windows render loop
 	SetCompleteHook(0xE8, 0x00525CEC, &CCustomChangeClass::MyRenderWindows);
 }
 
@@ -514,7 +514,7 @@ void CCustomChangeClass::ConfirmChange()
 		return;
 	}
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Send class change request packet
+	// Update CMZ 17 (3.1.7) 28-09-26 - Send class change request packet
 	PMSG_CUSTOM_CHANGE_CLASS_REQ pMsg;
 	pMsg.h.set(0xF3, 0xE5, sizeof(pMsg));
 	pMsg.TargetClass = (BYTE)s_Classes[this->m_SelectedClass].ClassCode;
@@ -523,7 +523,7 @@ void CCustomChangeClass::ConfirmChange()
 	this->Close();
 }
 
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Receive class change response packet
+// Update CMZ 17 (3.1.7) 28-09-26 - Receive class change response packet
 void CCustomChangeClass::GCChangeClassRecv(PMSG_CUSTOM_CHANGE_CLASS_ANS* lpMsg)
 {
 	if (lpMsg->Result == 0)

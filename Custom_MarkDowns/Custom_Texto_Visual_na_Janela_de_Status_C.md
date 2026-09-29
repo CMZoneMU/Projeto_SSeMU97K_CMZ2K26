@@ -1,7 +1,7 @@
-# UPDATE CMZ 14 (3.1.4) - Custom: Texto Visual na Janela de Status ("C")
+# UPDATE CMZ 15 (3.1.5) - Custom: Texto Visual na Janela de Status ("C")
 
 > **Documentação Técnica Oficial de Customização - CMZone / CMZ SSeMU 97k**  
-> **Versão do Pacote:** UPDATE CMZ 14 (3.1.4)  
+> **Versão do Pacote:** UPDATE CMZ 15 (3.1.5)  
 > **Status:** Implementado, Sincronizado e Validado no Cliente e Servidor  
 
 ---
@@ -102,7 +102,7 @@ graph TD
 A função intercepta a renderização do texto `Level: %d` original, executa o desenho padrão sem afetá-lo e, em seguida, desenha as duas novas linhas com centralização e fundo suaves.
 
 ```cpp
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Render Reset and VIP Text in Character Status Window
+// Update CMZ 15 (3.1.5) 26-09-26 - Render Reset and VIP Text in Character Status Window
 int PrintPlayerRenderLevelText(int iPos_x, int iPos_y, char *pszText, int iBoxWidth, int iSort, SIZE *lpTextSize)
 {
 	// 1. Renderiza o texto original do Level normalmente

@@ -163,7 +163,7 @@ void __stdcall ProtocolCoreEx(BYTE head, BYTE* lpMsg)
 				case 0xED:
 					GCItemValueListRecv((PMSG_ITEM_LIST_INFO_RECV*)lpMsg);
 					break;
-				// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class Response
+				// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class Response
 				case 0xE5:
 					gCustomChangeClass.GCChangeClassRecv((PMSG_CUSTOM_CHANGE_CLASS_ANS*)lpMsg);
 					break;
@@ -322,7 +322,7 @@ void GCCharacterInfoRecv(PMSG_CHARACTER_INFO_RECV* lpMsg)
 	ViewDexterity = lpMsg->ViewDexterity;
 	ViewVitality = lpMsg->ViewVitality;
 	ViewEnergy = lpMsg->ViewEnergy;
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Set AccountLevel in Character Info
+	// Update CMZ 15 (3.1.5) 26-09-26 - Set AccountLevel in Character Info
 	ViewAccountLevel = lpMsg->ViewAccountLevel;
 	ViewFruitPoint = lpMsg->FruitPoint;
 	ViewMaxFruitPoint = lpMsg->MaxFruitPoint;
@@ -397,7 +397,7 @@ void GCNewCharacterInfoRecv(PMSG_NEW_CHARACTER_INFO_RECV* lpMsg)
 	ViewDexterity = lpMsg->ViewDexterity;
 	ViewVitality = lpMsg->ViewVitality;
 	ViewEnergy = lpMsg->ViewEnergy;
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Set AccountLevel in New Character Info
+	// Update CMZ 15 (3.1.5) 26-09-26 - Set AccountLevel in New Character Info
 	ViewAccountLevel = lpMsg->ViewAccountLevel;
 	ViewExperience = lpMsg->Experience;
 	ViewNextExperience = lpMsg->NextExperience;

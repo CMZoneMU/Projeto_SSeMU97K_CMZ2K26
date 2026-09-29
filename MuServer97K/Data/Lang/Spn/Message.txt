@@ -538,7 +538,7 @@
 743     "Solo puede ser usado por el Maestro de Guild de la guild propietaria."
 744     "Se ha alcanzado el limite de mezclas permitidas por dia."
 
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class System
+// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class System
 760     "El sistema de cambio de clase esta desactivado!"
 761     "Clase seleccionada invalida!"
 762     "No puedes cambiar de clase en este momento!"

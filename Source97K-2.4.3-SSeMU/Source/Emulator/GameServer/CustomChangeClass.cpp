@@ -1,4 +1,4 @@
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class System
+// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class System
 // CustomChangeClass.cpp: implementation of the CCustomChangeClass class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 		GCMoneySend(lpObj->Index, lpObj->Money);
 	}
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Calculate distributed points from previous class
+	// Update CMZ 17 (3.1.7) 28-09-26 - Calculate distributed points from previous class
 	if (this->m_CustomChangeClassResetPoints != 0)
 	{
 		int oldStr = gDefaultClassInfo.GetCharacterDefaultStat(lpObj->Class, 0);
@@ -134,7 +134,7 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 		}
 	}
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Set new class, category and changeup
+	// Update CMZ 17 (3.1.7) 28-09-26 - Set new class, category and changeup
 	int newClass = targetClass / 16;
 	int newChangeUp = targetClass % 16;
 
@@ -142,7 +142,7 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 	lpObj->Class = newClass;
 	lpObj->ChangeUp = newChangeUp;
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Apply new default stats
+	// Update CMZ 17 (3.1.7) 28-09-26 - Apply new default stats
 	if (this->m_CustomChangeClassResetPoints != 0)
 	{
 		lpObj->Strength = gDefaultClassInfo.GetCharacterDefaultStat(lpObj->Class, 0);
@@ -151,7 +151,7 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 		lpObj->Energy = gDefaultClassInfo.GetCharacterDefaultStat(lpObj->Class, 3);
 	}
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Remove incompatible learned skills
+	// Update CMZ 17 (3.1.7) 28-09-26 - Remove incompatible learned skills
 	if (this->m_CustomChangeClassResetSkills != 0)
 	{
 		for (int n = 0; n < MAX_SKILL_LIST; n++)
@@ -168,7 +168,7 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 		gSkillManager.GCSkillListSend(lpObj);
 	}
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Set quest level 2 for evolved classes
+	// Update CMZ 17 (3.1.7) 28-09-26 - Set quest level 2 for evolved classes
 	if (targetClass == DB_CLASS_BK || targetClass == DB_CLASS_SM || targetClass == DB_CLASS_ME)
 	{
 		gQuest.AddQuestList(lpObj, 0, QUEST_FINISH);
@@ -179,14 +179,14 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 	lpObj->SendQuestInfo = 0;
 	gQuest.GCQuestInfoSend(lpObj->Index);
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Send evolution reward packet (golden aura effect)
+	// Update CMZ 17 (3.1.7) 28-09-26 - Send evolution reward packet (golden aura effect)
 	BYTE ClassReward = (lpObj->ChangeUp * 16);
 	ClassReward -= (ClassReward / 32);
 	ClassReward += (lpObj->Class * 32);
 
 	gQuest.GCQuestRewardSend(lpObj->Index, 201, ClassReward);
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Recalculate attributes and broadcast charset
+	// Update CMZ 17 (3.1.7) 28-09-26 - Recalculate attributes and broadcast charset
 	gObjectManager.CharacterCalcAttribute(lpObj->Index);
 	gObjectManager.CharacterMakePreviewCharSet(lpObj->Index);
 
@@ -214,7 +214,7 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 	gNotice.GCNoticeSend(lpObj->Index, 1, 0, 0, 0, 0, 0, gMessage.GetMessage(768), className);
 	gLog.Output(LOG_COMMAND, "[CustomChangeClass][%s][%s] - Class changed to %s (%d)", lpObj->Account, lpObj->Name, className, targetClass);
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Move to town gate to refresh client view
+	// Update CMZ 17 (3.1.7) 28-09-26 - Move to town gate to refresh client view
 	if (this->m_CustomChangeClassGateMove != 0)
 	{
 		switch (lpObj->Class)

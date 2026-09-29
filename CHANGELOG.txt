@@ -1,8 +1,14 @@
-## Projeto Free CMZone Fixs 97K - Base SSeMU 97KOR
-## Inicio: 17/08/2026
-## Créditos Source: SSeMU SetecSoft Development  
-## Créditos MuServer e Cliente: SSeMU SetecSoft Development
-## IDE Antigravity: Organizar e Implementar as Correções.
+// #############################################################################
+// # SSeMU MU Online Emulator
+// # ---------------------------------------------------------------------------
+// # Website  : https://www.ssemu.com.ar
+// # Forum    : https://www.ssemu.com.ar/forum
+// # YouTube  : https://www.youtube.com/@ssemu
+// # WhatsApp : https://whatsapp.com/channel/0029VaATlSF8F2pDP6OlCG2z
+// # ---------------------------------------------------------------------------
+// # © 2021 ~ 2026 SetecSoft Development
+// # This file is part of the SSeMU MuOnline server package.
+// #############################################################################
 
 UPDATE CMZ 17 (3.1.7) 28-09-26 / CUSTOM CHANGE CLASS INTERFACE & SYSTEM:
 * Sistema Customizado de Troca de Classe (Change Class System): implementada funcionalidade completa de troca de classe in-game (Blade Knight, Soul Master, Muse Elf e Magic Gladiator), integrada entre GameServer e Client Main. [GameServer][Main.dll][CustomChangeClass.h/.cpp][Client97K][MuServer97K][97KOR]
