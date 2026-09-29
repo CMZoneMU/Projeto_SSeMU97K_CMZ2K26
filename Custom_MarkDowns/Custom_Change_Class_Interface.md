@@ -1,7 +1,7 @@
 # Custom: Troca de Classe via Interface (Change Class System) - Fase 1: Interface & Protótipo Interativo
 
 > **Documentação Técnica Oficial de Customização - CMZone / SSeMU 97k 2K26**  
-> **Versão / Base:** 97K SSeMU Update CMZ (2.5.9) / Kayito  
+> **Versão / Base:** UPDATE CMZ 17 (3.1.7) 28-09-26 / Kayito  
 > **Data de Criação:** 2026-09-28  
 > **Autor / Adaptador:** CMZone  
 > **Status:** Fase 1 Concluída (Interface OpenGL, Navegação Carrossel e Renderizador de Texto Validados)  

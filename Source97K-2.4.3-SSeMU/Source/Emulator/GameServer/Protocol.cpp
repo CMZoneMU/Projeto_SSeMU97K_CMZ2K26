@@ -262,7 +262,7 @@ void ProtocolCore(BYTE head,BYTE* lpMsg,int size,int aIndex,int encrypt,int seri
 				case 0x30:
 					CGOptionDataRecv((PMSG_OPTION_DATA_RECV*)lpMsg,aIndex);
 					break;
-				// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class Request
+				// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class Request
 				case 0xE5:
 					gCustomChangeClass.CGChangeClassRecv((PMSG_CUSTOM_CHANGE_CLASS_REQ*)lpMsg, aIndex);
 					break;
@@ -1941,7 +1941,7 @@ void GCNewCharacterInfoSend(LPOBJ lpObj) // OK
 	pMsg.ViewDexterity = lpObj->Dexterity;
 	pMsg.ViewVitality = lpObj->Vitality;
 	pMsg.ViewEnergy = lpObj->Energy;
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Set AccountLevel in New Character Info
+	// Update CMZ 15 (3.1.5) 26-09-26 - Set AccountLevel in New Character Info
 	pMsg.ViewAccountLevel = (DWORD)(lpObj->AccountLevel);
 
 	DataSend(lpObj->Index,(BYTE*)&pMsg,pMsg.header.size);

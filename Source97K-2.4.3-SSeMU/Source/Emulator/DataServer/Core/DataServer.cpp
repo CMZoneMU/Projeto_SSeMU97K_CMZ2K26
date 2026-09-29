@@ -220,7 +220,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam) // 
 			PAINTSTRUCT hPaintStruct;
 			HDC hdc = BeginPaint(hWnd,&hPaintStruct);
 			HDC hMemDC = CreateCompatibleDC(hdc);
-			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Load TopBar bitmap with DIB fallback and clean GDI release
+			// Update CMZ 15 (3.1.5) 26-09-26 - Load TopBar bitmap with DIB fallback and clean GDI release
 			HBITMAP hBmp = (HBITMAP)LoadImage(hInst,MAKEINTRESOURCE(IDB_BITMAP1),IMAGE_BITMAP,0,0,LR_CREATEDIBSECTION);
 			if(hBmp == 0) hBmp = LoadBitmap(hInst,MAKEINTRESOURCE(IDB_BITMAP1));
 			HBITMAP OldBmp = (HBITMAP)SelectObject(hMemDC,hBmp);

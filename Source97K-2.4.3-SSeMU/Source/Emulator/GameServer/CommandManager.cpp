@@ -405,7 +405,7 @@ void CCommandManager::ManagementCore(LPOBJ lpObj,char* message) // OK
 		case COMMAND_CUSTOM_PICK_CLEAR:
 			gCustomPick.CommandCustomClear(lpObj);
 			break;
-		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ (2.5.9) - Custom Change Class command dispatches
+		// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class command dispatches
 		case COMMAND_CUSTOM_CHANGE_CLASS:
 			gCustomChangeClass.CommandChangeClass(lpObj, argument);
 			break;

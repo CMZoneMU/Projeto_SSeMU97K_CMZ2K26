@@ -6,7 +6,7 @@
 DWORD ViewIndex = 0;
 DWORD ViewLevel = 0;
 DWORD ViewReset = 0;
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Initialize ViewAccountLevel
+// Update CMZ 15 (3.1.5) 26-09-26 - Initialize ViewAccountLevel
 DWORD ViewAccountLevel = 0;
 DWORD ViewPoint = 0;
 DWORD ViewCurHP = 0;
@@ -56,7 +56,7 @@ void InitPrintPlayer()
 
 	SetCompleteHook(0xE8, 0x004BD00C, &PrintPlayerViewBP2);
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Hook Character Status Window Level Text
+	// Update CMZ 15 (3.1.5) 26-09-26 - Hook Character Status Window Level Text
 	SetCompleteHook(0xE8, 0x004ED3A5, &PrintPlayerRenderLevelText);
 
 	SetCompleteHook(0xE8, 0x004ED48F, &PrintPlayerViewExperience); //case 201: "Exp: %u/%u"
@@ -100,19 +100,19 @@ void InitPrintPlayer()
 	SetCompleteHook(0xE9, 0x0047DD80, &CalculateAttackSpeed);
 }
 
-// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Render Reset and VIP Text in Character Status Window
+// Update CMZ 15 (3.1.5) 26-09-26 - Render Reset and VIP Text in Character Status Window
 int PrintPlayerRenderLevelText(int iPos_x, int iPos_y, char *pszText, int iBoxWidth, int iSort, SIZE *lpTextSize)
 {
 	int result = RenderText(iPos_x, iPos_y, pszText, iBoxWidth, iSort, lpTextSize);
 
 	DWORD dwOldColor = SetTextColor;
 	DWORD dwOldBgColor = SetBackgroundTextColor;
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Select bold font (g_hFontBold) to match Spare Points style
+	// Update CMZ 15 (3.1.5) 26-09-26 - Select bold font (g_hFontBold) to match Spare Points style
 	HFONT hOldFont = (HFONT)SelectObject(m_hFontDC, g_hFontBold);
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Soft black background opacity from WebZen DecIDA (0x80000000)
+	// Update CMZ 15 (3.1.5) 26-09-26 - Soft black background opacity from WebZen DecIDA (0x80000000)
 	SetBackgroundTextColor = 0x80000000;
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Match text color with Spare Points (Color4f: 100, 150, 255, 255)
+	// Update CMZ 15 (3.1.5) 26-09-26 - Match text color with Spare Points (Color4f: 100, 150, 255, 255)
 	SetTextColor = Color4f(100, 150, 255, 255);
 
 	char szReset[32];
@@ -139,7 +139,7 @@ int PrintPlayerRenderLevelText(int iPos_x, int iPos_y, char *pszText, int iBoxWi
 	GetTextExtentPoint32A(m_hFontDC, szReset, lstrlenA(szReset), &sz1);
 	GetTextExtentPoint32A(m_hFontDC, szVip, lstrlenA(szVip), &sz2);
 
-	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update CMZ 14 (3.1.4) - Align center with Point text from WebZen DecIDA (Line 170751)
+	// Update CMZ 15 (3.1.5) 26-09-26 - Align center with Point text from WebZen DecIDA (Line 170751)
 	int iWindowX = iPos_x - 14;
 	int iPointBoxWidth = (80 * WindowWidth) / 640;
 	int iPointBoxX = iWindowX + 95;
