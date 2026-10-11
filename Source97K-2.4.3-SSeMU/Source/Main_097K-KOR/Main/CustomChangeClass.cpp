@@ -31,6 +31,7 @@ CCustomChangeClass::CCustomChangeClass()
 	this->m_Active = false;
 	this->m_SelectedClass = 0; // Default to first class (Blade Knight)
 	this->m_CurrentFaceModel = -1;
+	this->m_LastConfirmTime = 0;
 }
 
 CCustomChangeClass::~CCustomChangeClass()
@@ -51,6 +52,27 @@ void CCustomChangeClass::LoadImages()
 	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.1.9) - Load background window texture
 	OpenJPG("Interface\\back_middle.jpg", CUSTOM_CHANGE_CLASS_BG_TEXTURE, GL_NEAREST, GL_CLAMP, NULL, true);
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.2) - Load class avatar face textures (OZT with native alpha)
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_sm.tga", CUSTOM_CHANGE_CLASS_FACE_SM, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_sm.tga", CUSTOM_CHANGE_CLASS_FACE_SM, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_bk.tga", CUSTOM_CHANGE_CLASS_FACE_BK, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_bk.tga", CUSTOM_CHANGE_CLASS_FACE_BK, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_me.tga", CUSTOM_CHANGE_CLASS_FACE_ME, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_me.tga", CUSTOM_CHANGE_CLASS_FACE_ME, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_mg.tga", CUSTOM_CHANGE_CLASS_FACE_MG, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_mg.tga", CUSTOM_CHANGE_CLASS_FACE_MG, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
 	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.1) - Load CustomClass_Frame texture (OZT with native alpha or fallback)
 	if (!OpenTGA("Custom\\Interface\\CustomClass_Frame.tga", CUSTOM_CHANGE_CLASS_FRAME, GL_NEAREST, GL_CLAMP, NULL, false))
 	{
@@ -61,6 +83,17 @@ void CCustomChangeClass::LoadImages()
 				OpenJPG("Custom\\Interface\\CustomClass\\CustomClass_Frame.jpg", CUSTOM_CHANGE_CLASS_FRAME, GL_NEAREST, GL_CLAMP, NULL, true);
 			}
 		}
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.3) - Load TC button textures from Custom\Interface\CustomClass
+	if (!OpenJPG("Custom\\Interface\\CustomClass\\Mix_button1.jpg", CUSTOM_CHANGE_CLASS_BTN_NORMAL, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenJPG("Interface\\Mix_button1.jpg", CUSTOM_CHANGE_CLASS_BTN_NORMAL, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenJPG("Custom\\Interface\\CustomClass\\Mix_button2.jpg", CUSTOM_CHANGE_CLASS_BTN_CLICK, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenJPG("Interface\\Mix_button2.jpg", CUSTOM_CHANGE_CLASS_BTN_CLICK, GL_NEAREST, GL_CLAMP, NULL, true);
 	}
 }
 
@@ -147,60 +180,28 @@ void CCustomChangeClass::RenderCharacterButton()
 	}
 
 	// In 97K 640x480 coordinate space, Character window is at X=450, Y=0 (width 190, height 433)
-	// Close button [X] is at X=468, Y=390. Mirrored slot on bottom right is at X=578, Y=390.
+	// Close button [X] is at X=475, Y=395 (24x24). Mirrored button on bottom right is at X=578, Y=395.
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.5) - Align button vertically with native close button
 	float btX = 578.0f;
-	float btY = 390.0f;
+	float btY = 395.0f;
 	float btW = 24.0f;
 	float btH = 24.0f;
 
 	bool bHover = this->IsWorkZone(btX, btY, btW, btH);
 
-	// Disable textures for solid OpenGL color drawing
-	glDisable(GL_TEXTURE_2D);
-	EnableAlphaTest(true);
-
-	if (bHover)
-	{
-		// Golden glowing border
-		glColor4f(0.85f, 0.70f, 0.15f, 0.90f);
-		RenderColor(btX - 1.0f, btY - 1.0f, btW + 2.0f, btH + 2.0f);
-
-		// Button background
-		glColor4f(0.20f, 0.20f, 0.25f, 0.95f);
-		RenderColor(btX, btY, btW, btH);
-	}
-	else
-	{
-		// Subtle dark golden border
-		glColor4f(0.50f, 0.40f, 0.15f, 0.75f);
-		RenderColor(btX - 1.0f, btY - 1.0f, btW + 2.0f, btH + 2.0f);
-
-		// Button background
-		glColor4f(0.10f, 0.10f, 0.12f, 0.90f);
-		RenderColor(btX, btY, btW, btH);
-	}
-
-	// Reset OpenGL color and re-enable textures for text/tooltips
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.3) - Render native Mix_button texture for TC button
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
-	DisableAlphaBlend();
+	EnableAlphaTest(true);
+
+	int btnTexture = (bHover && (MouseLButton || MouseLButtonPush)) ? CUSTOM_CHANGE_CLASS_BTN_CLICK : CUSTOM_CHANGE_CLASS_BTN_NORMAL;
+	RenderBitmap(btnTexture, btX, btY, btW, btH, (0.0f / 64.0f), (0.0f / 32.0f), (44.0f / 64.0f), (32.0f / 32.0f), true, true);
 
 	// Show tooltip on hover
 	if (bHover)
 	{
 		pRenderTipText((int)btX - 25, (int)btY - 13, "Trocar classe");
 	}
-
-	// Draw button text transparently without background box
-	DWORD dwOldColor = SetTextColor;
-	DWORD dwOldBgColor = SetBackgroundTextColor;
-	HFONT hOldFont = (HFONT)SelectObject(m_hFontDC, g_hFontBold);
-
-	this->DrawTextCenter((int)btX, (int)btY + 6, (int)btW, g_hFontBold, bHover ? RGBA_TEXT(255, 255, 255, 255) : RGBA_TEXT(255, 204, 0, 255), "TC");
-
-	SelectObject(m_hFontDC, hOldFont);
-	SetTextColor = dwOldColor;
-	SetBackgroundTextColor = dwOldBgColor;
 
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
@@ -303,17 +304,32 @@ void CCustomChangeClass::RenderChangeClassWindow()
 	}
 	RenderBitmap(rightArrowTexture, arrowRightX, arrowY, arrowW, arrowH, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
 
-	// 5. Render CustomClass_Frame texture (Single frame from Custom\Interface)
+	// 5. Render Class Avatar Face Texture (Inside upper frame box)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.2) - Render selected class avatar inside frame
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_TEXTURE_2D);
+	EnableAlphaTest(true);
+
+	float avatarW = 80.0f;
+	float avatarH = 80.0f;
+	float avatarX = frameX + (frameW - avatarW) / 2.0f;
+	float avatarY = frameY + 7.0f;
+	int faceTexture = CUSTOM_CHANGE_CLASS_FACE_BK;
+	switch (this->m_SelectedClass)
+	{
+		case 0: faceTexture = CUSTOM_CHANGE_CLASS_FACE_BK; break; // Blade Knight
+		case 1: faceTexture = CUSTOM_CHANGE_CLASS_FACE_SM; break; // Soul Master
+		case 2: faceTexture = CUSTOM_CHANGE_CLASS_FACE_ME; break; // Muse Elf
+		case 3: faceTexture = CUSTOM_CHANGE_CLASS_FACE_MG; break; // Magic Gladiator
+	}
+	RenderBitmap(faceTexture, avatarX, avatarY, avatarW, avatarH, 0.0f, 0.0f, 1.0f, 1.0f, true, true);
+
+	// 6. Render CustomClass_Frame texture (Overlaying the avatar as an elegant golden frame)
 	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.1) - Render CustomClass_Frame texture with native alpha channel
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
 	EnableAlphaTest(true);
 	RenderBitmap(CUSTOM_CHANGE_CLASS_FRAME, frameX, frameY, frameW, frameH, (30.0f / 256.0f), (24.0f / 256.0f), (152.0f / 256.0f), (203.0f / 256.0f), true, true);
-
-	// Inside upper frame box: draw class tag indicator
-	char szClassTag[16];
-	wsprintf(szClassTag, "[ %s ]", s_Classes[this->m_SelectedClass].Tag);
-	this->DrawTextCenter((int)frameX, (int)(frameY + 38.0f), (int)frameW, g_hFontBig, RGBA_TEXT(255, 204, 0, 255), szClassTag);
 
 	// 7. Backup font and text colors
 	HFONT hOldFont = (HFONT)SelectObject(m_hFontDC, g_hFont);
@@ -353,11 +369,12 @@ void CCustomChangeClass::UpdateMouse()
 		return;
 	}
 
-	// 1. Mouse check for button in Character Status window (X=578, Y=390, 24x24)
+	// 1. Mouse check for button in Character Status window (X=578, Y=395, 24x24)
 	if (CharacterOpened == 1)
 	{
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.5) - Align click zone vertically with native close button
 		float btX = 578.0f;
-		float btY = 390.0f;
+		float btY = 395.0f;
 		float btW = 24.0f;
 		float btH = 24.0f;
 
@@ -475,13 +492,18 @@ void CCustomChangeClass::ConfirmChange()
 		return;
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Anti-spam rate limit on Confirm button (3 seconds)
+	if ((GetTickCount() - this->m_LastConfirmTime) < 3000)
+	{
+		return;
+	}
+	this->m_LastConfirmTime = GetTickCount();
+
 	// Update CMZ 17 (3.1.7) 28-09-26 - Send class change request packet
 	PMSG_CUSTOM_CHANGE_CLASS_REQ pMsg;
 	pMsg.h.set(0xF3, 0xE5, sizeof(pMsg));
 	pMsg.TargetClass = (BYTE)s_Classes[this->m_SelectedClass].ClassCode;
 	DataSend((BYTE*)&pMsg, pMsg.h.size);
-
-	this->Close();
 }
 
 // Update CMZ 17 (3.1.7) 28-09-26 - Receive class change response packet

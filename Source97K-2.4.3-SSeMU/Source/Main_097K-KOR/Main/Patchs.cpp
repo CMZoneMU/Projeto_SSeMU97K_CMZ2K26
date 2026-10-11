@@ -135,6 +135,9 @@ void InitPatchs()
 
 	SetCompleteHook(0xE8, 0x00525D4C, &CalcFPS);
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.4) - Hide right dragon (Menu04) when right windows are open
+	SetCompleteHook(0xE8, 0x004BD332, &RenderRightDragon);
+
 	// --- Render path principal (gameplay normal) ---
 	// Patch 1: Transparência do corpo do item a partir de +14 (era +12)
 	SetByte(0x0050565F, 0x0D);
@@ -621,4 +624,33 @@ int OpenObjectsEnc(char* FileName)
 	fclose(fp);
 
 	return iMapNumber;
+}
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.4) - Check if any right-side window is open
+static bool CheckRightWindowsOpen()
+{
+	if ((*(BYTE*)0x07EAA114 == 1) || // Guild ("G")
+		(*(BYTE*)0x07EAA115 == 1) || // Party ("P")
+		(*(BYTE*)0x07EAA116 == 1) || // Character ("C")
+		(*(BYTE*)0x07EAA117 == 1) || // Inventory ("V")
+		(*(BYTE*)0x07EAA119 == 1) || // Warehouse (Bau)
+		(*(BYTE*)0x07EAA11A == 1) || // Chaos Machine
+		(*(BYTE*)0x07EAA11B == 1) || // Trade
+		(*(BYTE*)0x007EAA130 == 1))  // Event Time Window
+	{
+		return true;
+	}
+
+	return false;
+}
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.4) - Render right dragon (Menu04) only when windows are closed
+void __cdecl RenderRightDragon(int Texture, float x, float y, float Width, float Height, float u, float v, float uWidth, float vHeight, bool Scale, bool StartScale)
+{
+	if (CheckRightWindowsOpen())
+	{
+		return;
+	}
+
+	RenderBitmap(Texture, x, y, Width, Height, u, v, uWidth, vHeight, Scale, StartScale);
 }

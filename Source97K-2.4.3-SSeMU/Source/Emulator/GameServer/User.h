@@ -678,6 +678,8 @@ struct OBJECTSTRUCT
 	PICK_STRUCT Pick;
 	int InvasionIndex;
 	bool WindowTimeOpen;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Security cooldown timer for class change
+	DWORD CustomChangeClassTime;
 };
 
 struct OBJECTSTRUCT_HEADER

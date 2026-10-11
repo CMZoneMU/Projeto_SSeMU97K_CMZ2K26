@@ -8,8 +8,10 @@
 #include "CommandManager.h"
 #include "DSProtocol.h"
 #include "DefaultClassInfo.h"
+#include "EffectManager.h"
 #include "Item.h"
 #include "Log.h"
+#include "Map.h"
 #include "Message.h"
 #include "Notice.h"
 #include "ObjectManager.h"
@@ -69,6 +71,20 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 	if (lpObj->Interface.use != 0 || lpObj->State == OBJECT_DELCMD || lpObj->DieRegen != 0 || lpObj->Teleport != 0 || lpObj->PShopOpen != 0 || lpObj->SkillSummonPartyTime != 0)
 	{
 		gNotice.GCNoticeSend(lpObj->Index, 1, 0, 0, 0, 0, 0, gMessage.GetMessage(762));
+		return false;
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Security: Block PK / Outlaw players
+	if (lpObj->PKLevel > 3)
+	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, 0, 0, 0, 0, 0, "Voce nao pode trocar de classe enquanto estiver PK!");
+		return false;
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Security: Block event maps and duel
+	if (BC_MAP_RANGE(lpObj->Map) != 0 || DS_MAP_RANGE(lpObj->Map) != 0 || lpObj->DuelUser != -1)
+	{
+		gNotice.GCNoticeSend(lpObj->Index, 1, 0, 0, 0, 0, 0, "Voce nao pode trocar de classe dentro de eventos ou duelo!");
 		return false;
 	}
 
@@ -185,6 +201,12 @@ bool CCustomChangeClass::ChangeClass(LPOBJ lpObj, int targetClass)
 	ClassReward += (lpObj->Class * 32);
 
 	gQuest.GCQuestRewardSend(lpObj->Index, 201, ClassReward);
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Security: Update cooldown timer
+	lpObj->CustomChangeClassTime = GetTickCount();
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Security: Clear all buffs and effects from previous class
+	gEffectManager.ClearAllEffect(lpObj);
 
 	// Update CMZ 17 (3.1.7) 28-09-26 - Recalculate attributes and broadcast charset
 	gObjectManager.CharacterCalcAttribute(lpObj->Index);
