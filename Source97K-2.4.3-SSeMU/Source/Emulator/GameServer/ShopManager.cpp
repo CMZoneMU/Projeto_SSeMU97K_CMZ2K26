@@ -85,6 +85,9 @@ void CShopManager::Load(char* path) // OK
 
 			info.GameMasterLevel = lpMemScript->GetAsNumber();
 
+			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Read CoinType option from ShopManager.txt
+			info.CoinShopType = lpMemScript->GetAsNumber();
+
 			char FilePath[100];
 
 			wsprintf(FilePath,"Shop\\%s.txt",lpMemScript->GetAsString());
@@ -186,12 +189,18 @@ short CShopManager::GetShopNumber(int MonsterClass,int MapNumber,int PosX,int Po
 	return -1;
 }
 
-bool CShopManager::GetItemByIndex(int index,CItem* lpItem,int slot) // OK
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Support CoinShopType output
+bool CShopManager::GetItemByIndex(int index,CItem* lpItem,int slot,int* type) // OK
 {
 	for(std::vector<SHOP_MANAGER_INFO>::iterator it = this->m_ShopManagerInfo.begin(); it != this->m_ShopManagerInfo.end(); it++)
 	{
 		if(it->Index == index)
 		{
+			if(type != 0)
+			{
+				(*type) = it->CoinShopType;
+			}
+
 			return it->Shop.GetItem(lpItem,slot);
 		}
 	}

@@ -35,6 +35,7 @@
 #include "Quest.h"
 #include "ServerInfo.h"
 #include "SkillManager.h"
+#include "SocketManager.h"
 #include "Trade.h"
 #include "Util.h"
 #include "Viewport.h"
@@ -42,6 +43,12 @@
 
 void ProtocolCore(BYTE head,BYTE* lpMsg,int size,int aIndex,int encrypt,int serial) // OK
 {
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Protocol security validation against packet injection
+	if(OBJECT_RANGE(aIndex) == 0 || lpMsg == 0 || size < 3 || size > MAX_MAIN_PACKET_SIZE)
+	{
+		return;
+	}
+
 	if(gObj[aIndex].Type == OBJECT_USER && gHackPacketCheck.CheckPacketHack(aIndex,head,((lpMsg[0]==0xC1)?lpMsg[3]:lpMsg[4]),encrypt,serial) == 0)
 	{
 		return;

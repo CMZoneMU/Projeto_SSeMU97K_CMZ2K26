@@ -144,6 +144,17 @@ void CDiePenalty::UserDieProc(LPOBJ lpObj,LPOBJ lpTarget)
 		return;
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Fix crash checking ranges for AccountLevel and Map
+	if(CHECK_RANGE(lpObj->AccountLevel,MAX_ACCOUNT_LEVEL) == 0)
+	{
+		return;
+	}
+
+	if(CHECK_RANGE(lpObj->Map,MAX_MAP) == 0 || gMapManager.IsValidMap(lpObj->Map) == 0)
+	{
+		return;
+	}
+
 	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Check MapManager DiePenalty setting
 	if(gMapManager.GetMapDiePenalty(lpObj->Map) == 0)
 	{
@@ -191,7 +202,8 @@ void CDiePenalty::UserDieProc(LPOBJ lpObj,LPOBJ lpTarget)
 
 		int exprate = it->ExpDecRate[lpObj->AccountLevel];
 
-		if(exprate > 0 && lpObj->Level > 0)
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Fix crash preventing out-of-bounds in gLevelExperience
+		if(exprate > 0 && lpObj->Level > 1 && lpObj->Level <= MAX_CHARACTER_LEVEL)
 		{
 			DWORD experience = 0;
 

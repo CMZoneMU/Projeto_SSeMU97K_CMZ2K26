@@ -3112,7 +3112,10 @@ void CItemManager::CGItemBuyRecv(PMSG_ITEM_BUY_RECV* lpMsg, int aIndex) // OK
 
 	CItem item;
 
-	if (gShopManager.GetItemByIndex(lpObj->TargetShopNumber, &item, lpMsg->slot) == 0)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Apply CoinValue price only if CoinType is active (1~3)
+	int type = 0;
+
+	if (gShopManager.GetItemByIndex(lpObj->TargetShopNumber, &item, lpMsg->slot, &type) == 0)
 	{
 		DataSend(aIndex, (BYTE*)&pMsg, pMsg.header.size);
 		return;
