@@ -63,6 +63,19 @@ void RenderTipTextList(int x,int y,int count,int tab,int sort,int point) // OK
 	memcpy(TextListColor,TipTextColor,sizeof(TipTextColor));
 	memcpy(TextBold,TipTextBold,sizeof(TipTextBold));
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 106 (2.6.5-1) - Fix tooltip visual overflow when item has too many lines
+	int BoxHeight = TextNum * 11;
+
+	if((y + BoxHeight) > 425)
+	{
+		y = 425 - BoxHeight;
+	}
+
+	if(y < 5)
+	{
+		y = 5;
+	}
+
 	((void(*)(int,int,int,int,int,int))0x004C2420)(x,y,TextNum,tab,sort,point);
 }
 

@@ -1708,6 +1708,30 @@ void gObjUserDie(LPOBJ lpObj,LPOBJ lpTarget) // OK
 		gTrade.ResetTrade(lpObj->Index);
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 106 (2.6.5-1) - Anuncio de morte PK apenas quando morto por outro jogador fora de duelo
+	if(OBJECT_RANGE(lpTarget->Index) != 0 && lpTarget->Type == OBJECT_USER)
+	{
+		if((lpObj->DuelUser != lpTarget->Index) && lpObj->PKLevel > 4)
+		{
+			char buff[256];
+
+			wsprintf(buff,gMessage.GetMessage(383),lpObj->Name,lpTarget->Name);
+
+			switch(gServerInfo.m_PKDeathAnnounce)
+			{
+				case 1:
+					PostMessage1("",buff,"");
+					break;
+				case 2:
+					PostMessage2("",buff,"");
+					break;
+				case 3:
+					PostMessage3("",buff,"");
+					break;
+			}
+		}
+	}
+
 	gObjSetKillCount(lpObj->Index,0);
 
 	if(gCustomArena.CheckMap(lpObj->Map) != 0)

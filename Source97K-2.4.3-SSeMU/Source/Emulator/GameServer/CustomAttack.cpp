@@ -14,6 +14,7 @@
 #include "Notice.h"
 #include "ObjectManager.h"
 #include "Party.h"
+#include "Reconnect.h"
 #include "SkillManager.h"
 #include "SocketManager.h"
 #include "Viewport.h"
@@ -62,6 +63,13 @@ void CCustomAttack::MainProc(LPOBJ lpObj) // OK
 			}
 		}
 
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 106 (2.6.5-1) - Refatorado Offline Attack com verificacao de zona de mapa
+		if(this->m_CustomAttackMapZone != -1 && this->m_CustomAttackMapList[lpObj->Map] == 0)
+		{
+			this->AttackOfflineClose(lpObj);
+			return;
+		}
+
 		if(this->m_CustomAttackOfflineKeepEnable[lpObj->AccountLevel] == 0)
 		{
 			if(gMap[lpObj->Map].CheckAttr(lpObj->X,lpObj->Y,1) != 0)
@@ -70,14 +78,7 @@ void CCustomAttack::MainProc(LPOBJ lpObj) // OK
 				return;
 			}
 
-			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 102 (2.6.2) - Check viewport position on offline attack
 			if(gViewport.CheckViewportObjectPosition(lpObj->Index,lpObj->Attack.StartMap,lpObj->Attack.StartX,lpObj->Attack.StartY,10) == 0)
-			{
-				this->AttackOfflineClose(lpObj);
-				return;
-			}
-
-			if((this->m_CustomAttackMapZone != -1 && this->m_CustomAttackMapList[lpObj->Map] == 0) || gMap[lpObj->Map].CheckAttr(lpObj->X,lpObj->Y,1) != 0)
 			{
 				this->AttackOfflineClose(lpObj);
 				return;
@@ -116,6 +117,12 @@ void CCustomAttack::MainProc(LPOBJ lpObj) // OK
 		}
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 106 (2.6.5-1) - Bloqueio de execucao de auto attack dentro de safezone
+	if(gMap[lpObj->Map].CheckAttr(lpObj->X,lpObj->Y,1) != 0)
+	{
+		return;
+	}
+
 	this->CustomAttackAutoPotion(lpObj);
 
 	this->CustomAttackAutoRepair(lpObj);
@@ -139,6 +146,8 @@ void CCustomAttack::AttackOfflineClose(LPOBJ lpObj) // OK
 {
 	if(lpObj->Attack.Offline != 0)
 	{
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 106 (2.6.5-1) - Remove reconnect info on offline attack close
+		gReconnect.GDReconnectInfoRemoveSend(lpObj->Name);
 		gObjDel(lpObj->Index);
 		lpObj->Attack.Started = 0;
 		lpObj->Attack.Offline = 0;
@@ -557,6 +566,9 @@ void CCustomAttack::CommandCustomAttackOffline(LPOBJ lpObj) // OK
 	lpObj->Attack.OnlineTime = ((DWORD)time(0));
 
 	closesocket(lpObj->PerSocketContext->Socket);
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 106 (2.6.5-1) - Salva informacoes de reconexao ao entrar em modo offline attack
+	gReconnect.SetReconnectInfo(lpObj);
 }
 
 void CCustomAttack::CustomAttackAutoPotion(LPOBJ lpObj) // OK
