@@ -144,7 +144,8 @@ void CDiePenalty::UserDieProc(LPOBJ lpObj,LPOBJ lpTarget)
 		return;
 	}
 
-	if(gMapManager.GetMapPKItemDrop(lpObj->Map) == 0)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Check MapManager DiePenalty setting
+	if(gMapManager.GetMapDiePenalty(lpObj->Map) == 0)
 	{
 		return;
 	}

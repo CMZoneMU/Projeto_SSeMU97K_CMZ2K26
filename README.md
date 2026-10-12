@@ -3,6 +3,12 @@
 ## Créditos Source: SSeMU SetecSoft Development  
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
 
+UPDATE CMZ 27 (3.2.7) 12-10-26 / SSeMU UPDATE 108 (2.6.6-1):
+* Renomeacao e Aplicacao de DiePenalty por Mapa (MapManager.txt / MapManager.h/.cpp): renomeada coluna PKItemDrop para DiePenalty em Data\MapManager.txt e atualizados membros e metodos do GameServer (GetMapDiePenalty) integrando com CDiePenalty::UserDieProc para controle por mapa. [GameServer][MapManager.h/.cpp][DiePenalty.cpp][Data\MapManager.txt][97KOR]
+* Correcao de Visualizacao e Glow do Item 31 em Todas as Categorias (ObjectManager.cpp): reparada a verificacao em CharacterMakePreviewCharSet substituindo a condicao excludente de TempInventory por lpObj->Inventory[n].IsItem() != 0, permitindo que itens com indice 31 (armas, escudos, asas e armaduras) recebam calculo de nivel, brilho (+glow) e novas opcoes visuais sem conflito. [GameServer][ObjectManager.cpp][97KOR]
+* Validacao e Blindagem de Requisitos de Itens (ItemManager.cpp): integrada a checagem CheckItemRequireLeadership em CheckItemMoveToInventory e IsValidItem, garantindo a validacao adequada de requisitos para equipar itens de lideranca. [GameServer][ItemManager.cpp][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 108 - Ver: 2.6.6-1) em stdafx.h e compilacao Win32 em modo Release (GameServer97k.exe) concluida com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][97KOR]
+
 UPDATE CMZ 26 (3.2.6) 12-10-26 / SSeMU UPDATE 107 (2.6.6):
 * Calculo Automatico de Multiplicador de Experiencia (ServerInfo.cpp): eliminadas as chaves legadas ExperienceMultiplierConstA e ExperienceMultiplierConstB do GameServerInfo - Common.dat, implementando calculo matematico dinamico e proporcional baseado em MaxLevel e MaxPetLevel (ServerInfo.cpp). [GameServer][ServerInfo.cpp][GameServerInfo - Common.dat][97KOR]
 * Expansao de MonsterIndex ate 512 no Viewport (Viewport.cpp): envio de monstros e summons no protocolo de rede 97k expandido para suportar ate 512 IDs sem alterar a estrutura oficial de 10 bytes do pacote, codificando o 9º bit em DirAndPkLevel e decodificando de forma transparente no Client Main. [GameServer][Viewport.cpp][97KOR]
