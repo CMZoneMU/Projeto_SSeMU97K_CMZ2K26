@@ -15,7 +15,8 @@ struct MAP_MANAGER_INFO
 	int ExcItemDropRate;
 	int SetItemDropRate;
 	int ItemDrop;
-	int PKItemDrop;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Renamed PKItemDrop to DiePenalty
+	int DiePenalty;
 	int MonsterHPBar;
 	int TradeEnable;
 	int PShopEnable;
@@ -46,7 +47,8 @@ public:
 	int GetMapExcItemDropRate(int index);
 	int GetMapSetItemDropRate(int index);
 	int GetMapItemDrop(int index);
-	int GetMapPKItemDrop(int index);
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Renamed GetMapPKItemDrop to GetMapDiePenalty
+	int GetMapDiePenalty(int index);
 	int GetMapMonsterHPBar(int index);
 	int GetMapTradeEnable(int index);
 	int GetMapPShopEnable(int index);

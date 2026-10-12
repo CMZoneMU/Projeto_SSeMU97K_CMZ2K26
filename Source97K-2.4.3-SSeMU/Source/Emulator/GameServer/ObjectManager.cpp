@@ -1182,7 +1182,8 @@ void CObjectManager::CharacterMakePreviewCharSet(int aIndex) // OK
 
 	for(int n=0;n < 7;n++)
 	{
-		if(TempInventory[n] != (MAX_ITEM_TYPE-1) && TempInventory[n] != 0xFFFF)
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Support item index 31 in all categories
+		if(lpObj->Inventory[n].IsItem() != 0)
 		{
 			level |= LevelSmallConvert(lpObj->Inventory[n].m_Level) << (n*3);
 

@@ -78,7 +78,8 @@ void CMapManager::Load(char* path) // OK
 
 			info.ItemDrop = lpMemScript->GetAsNumber();
 			
-			info.PKItemDrop = lpMemScript->GetAsNumber();
+			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Renamed PKItemDrop to DiePenalty
+			info.DiePenalty = lpMemScript->GetAsNumber();
 
 			info.MonsterHPBar = lpMemScript->GetAsNumber();
 			
@@ -246,13 +247,14 @@ int CMapManager::GetMapItemDrop(int index) // OK
 	return 0;
 }
 
-int CMapManager::GetMapPKItemDrop(int index) // OK
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Renamed GetMapPKItemDrop to GetMapDiePenalty
+int CMapManager::GetMapDiePenalty(int index) // OK
 {
 	std::map<int,MAP_MANAGER_INFO>::iterator it = this->m_MapManagerInfo.find(index);
 
 	if(it != this->m_MapManagerInfo.end())
 	{
-		return it->second.PKItemDrop;
+		return it->second.DiePenalty;
 	}
 
 	return 0;

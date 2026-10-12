@@ -740,6 +740,12 @@ bool CItemManager::CheckItemMoveToInventory(LPOBJ lpObj, CItem* lpItem, int slot
 		return 0;
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Check item require leadership
+	if (this->CheckItemRequireLeadership(lpObj, lpItem) == 0)
+	{
+		return 0;
+	}
+
 	if (this->CheckItemRequireClass(lpObj, lpItem->m_Index) == 0)
 	{
 		return 0;
@@ -1731,6 +1737,12 @@ bool CItemManager::IsValidItem(LPOBJ lpObj, CItem* lpItem) // OK
 	}
 
 	if (this->CheckItemRequireEnergy(lpObj, lpItem) == 0)
+	{
+		return 0;
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 108 (2.6.6-1) - Check item require leadership
+	if (this->CheckItemRequireLeadership(lpObj, lpItem) == 0)
 	{
 		return 0;
 	}
