@@ -50,6 +50,8 @@ struct CUSTOM_ATTACK_SKILL_INFO
 	int Index;
 	int Group;
 	int Value;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - MaxRange individual por skill
+	int Range;
 	int RequireClass[MAX_CLASS];
 };
 
@@ -76,7 +78,8 @@ public:
 	void CustomAttackAutoReload(LPOBJ lpObj);
 	void CustomAttackAutoBuff(LPOBJ lpObj);
 	void CustomAttackAutoAttack(LPOBJ lpObj);
-	int CustomAttackFindTarget(LPOBJ lpObj,int skill);
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - MaxRange individual por skill
+	int CustomAttackFindTarget(LPOBJ lpObj,int skill,int range);
 	CSkill* CustomAttackFindSkill(LPOBJ lpObj,int skill);
 	void CustomAttackUseSkill(LPOBJ lpObj,LPOBJ lpTarget,CUSTOM_ATTACK_SKILL_INFO* lpInfo,CSkill* lpSkill);
 	void CustomAttackSkillAttack(LPOBJ lpObj,int bIndex,int skill);

@@ -306,6 +306,9 @@ void CCustomAttack::Load(char* path) // OK
 
 					info.Value = lpMemScript->GetAsNumber();
 
+					// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - MaxRange individual por skill em CustomAttack
+					info.Range = lpMemScript->GetAsNumber();
+
 					for(int n=0;n < MAX_CLASS;n++){info.RequireClass[n] = lpMemScript->GetAsNumber();}
 
 					this->SetInfo(info);
@@ -898,13 +901,15 @@ void CCustomAttack::CustomAttackAutoAttack(LPOBJ lpObj) // OK
 		return;
 	}
 
-	if(this->CustomAttackFindTarget(lpObj,lpSkill->m_index) != 0)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - MaxRange individual por skill em CustomAttack
+	if(this->CustomAttackFindTarget(lpObj,lpSkill->m_index,lpInfo->Range) != 0)
 	{
 		this->CustomAttackUseSkill(lpObj,&gObj[lpObj->Attack.TargetIndex],lpInfo,lpSkill);
 	}
 }
 
-int CCustomAttack::CustomAttackFindTarget(LPOBJ lpObj,int skill) // OK
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - MaxRange individual por skill em CustomAttack
+int CCustomAttack::CustomAttackFindTarget(LPOBJ lpObj,int skill,int range) // OK
 {
 	int NearestDistance = 100;
 
@@ -923,6 +928,12 @@ int CCustomAttack::CustomAttackFindTarget(LPOBJ lpObj,int skill) // OK
 		int DistanceDifference = gObjCalcDistance(lpObj,&gObj[lpObj->VpPlayer2[n].index]);
 
 		if(DistanceDifference >= NearestDistance)
+		{
+			continue;
+		}
+
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - Validacao de MaxRange individual por skill
+		if(range != -1 && DistanceDifference > range)
 		{
 			continue;
 		}

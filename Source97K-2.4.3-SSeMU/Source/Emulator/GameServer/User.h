@@ -784,7 +784,7 @@ void gObjInterfaceCheckTime(LPOBJ lpObj);
 void gObjSkillNovaCheckTime(LPOBJ lpObj);
 void gObjPKDownCheckTime(LPOBJ lpObj,int time,int type);
 void gObjUserDie(LPOBJ lpObj,LPOBJ lpTarget);
-void gObjPlayerDiePenalty(LPOBJ lpObj,LPOBJ lpTarget);
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - Substituido gObjPlayerDiePenalty por gDiePenalty.UserDieProc
 void gObjPlayerKiller(LPOBJ lpObj,LPOBJ lpTarget);
 int gObjMoveGate(int aIndex,int gate);
 void gObjTeleport(int aIndex,int map,int x,int y);

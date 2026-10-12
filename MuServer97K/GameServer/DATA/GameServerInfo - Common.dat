@@ -103,25 +103,6 @@ ReconnectPickSwitch = 0
 ReconnectOfflineSwitch = 0
 
 ;==================================================
-; Die Penalty Settings
-;==================================================
-ExperienceDeduceRate1 = 1
-ExperienceDeduceRate2 = 2
-ExperienceDeduceRate3 = 5
-ExperienceDeduceRate4 = 10
-ExperienceDeduceRate5 = 20
-DropItemRate1 = 1
-DropItemRate2 = 6
-DropItemRate3 = 12
-DropItemRate4 = 25
-DropItemRate5 = 50
-DropItemLevel = 9
-DropItemPet = 0
-DropItemWing = 0
-DropItemExc = 0
-MoneyDeduceRate = 4
-
-;==================================================
 ; PK Settings
 ;==================================================
 NonPK = 0

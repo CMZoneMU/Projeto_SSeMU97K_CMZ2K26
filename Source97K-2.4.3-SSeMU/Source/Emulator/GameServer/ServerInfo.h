@@ -111,22 +111,7 @@ public:
 	int m_MonsterAttackSuccessRateRate;
 	int m_MonsterHealthBarSwitch;
 	int m_MonsterGetTopHitDamageUserMaxTime;
-	int m_ExperienceDeduceRate1;
-	int m_ExperienceDeduceRate2;
-	int m_ExperienceDeduceRate3;
-	int m_ExperienceDeduceRate4;
-	int m_ExperienceDeduceRate5;
-	int m_DropItemRate1;
-	int m_DropItemRate2;
-	int m_DropItemRate3;
-	int m_DropItemRate4;
-	int m_DropItemRate5;
-	int m_DropItemLevel;
-	int m_DropItemPet;
-	int m_DropItemWing;
-	int m_DropItemExc;
-	int m_DropItemSet;
-	int m_MoneyDeduceRate;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - Removidas opcoes legadas Die Penalty Settings (migradas para DiePenalty.txt)
 	int m_NonPK;
 	int m_PKLimitFree;
 	int m_PKLimitShop;

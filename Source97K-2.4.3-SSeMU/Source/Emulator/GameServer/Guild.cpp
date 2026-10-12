@@ -664,6 +664,12 @@ void CGuild::CGGuildMasterOpenRecv(PMSG_GUILD_MASTER_OPEN_RECV*lpMsg, int aIndex
 		return;
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - Reparada a opcao GuildCreateSwitch
+	if(gServerInfo.m_GuildCreateSwitch == 0)
+	{
+		goto CLEAR_JUMP;
+	}
+
 	if(lpMsg->result == 1)
 	{
 		if(lpObj->Level < gServerInfo.m_GuildCreateMinLevel[lpObj->AccountLevel])
@@ -702,6 +708,12 @@ void CGuild::CGGuildCreateRecv(PMSG_GUILD_CREATE_RECV* lpMsg,int aIndex) // OK
 	LPOBJ lpObj = &gObj[aIndex];
 
 	if(gObjIsConnectedGP(aIndex) == 0)
+	{
+		return;
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - Reparada a opcao GuildCreateSwitch
+	if(gServerInfo.m_GuildCreateSwitch == 0)
 	{
 		return;
 	}

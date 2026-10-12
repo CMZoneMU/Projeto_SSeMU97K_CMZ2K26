@@ -2,6 +2,14 @@
 ## Inicio: 17/08/2026
 ## Créditos Source: SSeMU SetecSoft Development  
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
+UPDATE CMZ 24 (3.2.4) 12-10-26 / SSeMU UPDATE 105 (2.6.5):
+* MaxRange Individual por Skill no CustomAttack: adicionada coluna MaxRange na Secao 1 de Data\Custom\CustomAttack.txt e integracao em CustomAttack.h/.cpp, permitindo limitar o raio de alcance maximo de busca de alvos individualmente por skill (* para alcance nativo da habilidade). [GameServer][CustomAttack.h/.cpp][Data\Custom\CustomAttack.txt][97KOR]
+* Sistema Avancado de Penalidade de Morte (DiePenalty.txt): implementado novo parser e gerenciador CDiePenalty (DiePenalty.h/.cpp) carregando Data\DiePenalty.txt dividido em Secao 0 (PvM) e Secao 1 (PvP), com controle granular de perda de EXP e Zen (por nivel de conta VIP AL0~AL3) e taxas e filtros de drop de itens (DropMinLevel, DropMaxLevel, DropMaxExcCount, DropHelperSwitch, DropWingSwitch, DropSetSwitch). [GameServer][DiePenalty.h/.cpp][Data\DiePenalty.txt][97KOR]
+* Limpeza e Migracao de Opcoes Legadas: removidas opcoes depreciadas de Die Penalty Settings de GameServerInfo - Common.dat e ServerInfo.h/.cpp, substituindo a rotina gObjPlayerDiePenalty pela integracao com gDiePenalty.UserDieProc em User.cpp. [GameServer][ServerInfo.h/.cpp][User.h/.cpp][GameServerInfo - Common.dat][97KOR]
+* Correcao de Criacao de Guild (GuildCreateSwitch): corrigida a validacao em CGGuildMasterInfoRecv e CGGuildCreateRecv (Guild.cpp), garantindo o bloqueio efetivo de abertura de interface e criacao de guild quando a opcao GuildCreateSwitch = 0. [GameServer][Guild.cpp][97KOR]
+* Embaralhamento Aleatorio em Rotinas de Tick (ObjectManager): implementado std::random_shuffle sobre a lista m_ObjectList de usuarios conectados, garantindo alternancia justa e aleatoria na ordem de processamento de CustomAttack, CustomPick e HackMoveSpeedCheck a cada ciclo. [GameServer][ObjectManager.cpp][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 105 - Ver: 2.6.5) em stdafx.h e compilacao Win32 em modo Release (GameServer97k.exe) concluida com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][97KOR]
+
 UPDATE CMZ 23 (3.2.3) 12-10-26 / SSeMU UPDATE 104 (2.6.4):
 * Calibracao e Correcao de Monstros de Blood Castle (MonsterList.txt): corrigidos atributos oficiais de monstros de Blood Castle 1 a 6 (IDs 84~98 e 111~130) em Data\Monster\MonsterList.txt, ajustando HP, dano min/max, defesa, taxas de ataque e niveis de acordo com o balanceamento oficial da SSeMU, adaptado para as 28 colunas padrao da versao 97k (removidas colunas excedentes de Season 4). [MuServer97K][Data\Monster\MonsterList.txt][97KOR]
 * Suporte ANSI / UTF-8 em Leitores e Scripts LUA: validada compatibilidade completa com arquivos ANSI e UTF-8 (com e sem BOM 0xEF, 0xBB, 0xBF) em CMemScript e no interpretador LUA nativo da 97k. [GameServer][MemScript.cpp][LuaFunction.cpp][97KOR]
