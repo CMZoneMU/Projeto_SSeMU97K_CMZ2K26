@@ -1,10 +1,14 @@
-// Update CMZ 17 (3.1.7) 28-09-26 - Custom Change Class Interface
 #include "stdafx.h"
 #include "CustomChangeClass.h"
 #include "Protect.h"
 #include "Protocol.h"
 #include "Util.h"
+#include "LoadModels.h"
 #include <gl/GL.h>
+#include <gl/GLU.h>
+
+#pragma comment(lib, "Opengl32.lib")
+#pragma comment(lib, "Glu32.lib")
 
 #ifndef RGBA_TEXT
 #define RGBA_TEXT(r, g, b, a) (((DWORD)(a) << 24) | ((DWORD)(b) << 16) | ((DWORD)(g) << 8) | ((DWORD)(r)))
@@ -26,6 +30,8 @@ CCustomChangeClass::CCustomChangeClass()
 {
 	this->m_Active = false;
 	this->m_SelectedClass = 0; // Default to first class (Blade Knight)
+	this->m_CurrentFaceModel = -1;
+	this->m_LastConfirmTime = 0;
 }
 
 CCustomChangeClass::~CCustomChangeClass()
@@ -39,6 +45,56 @@ void CCustomChangeClass::Init()
 
 	// Update CMZ 17 (3.1.7) 28-09-26 - Hook Windows render loop
 	SetCompleteHook(0xE8, 0x00525CEC, &CCustomChangeClass::MyRenderWindows);
+}
+
+void CCustomChangeClass::LoadImages()
+{
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.1.9) - Load background window texture
+	OpenJPG("Interface\\back_middle.jpg", CUSTOM_CHANGE_CLASS_BG_TEXTURE, GL_NEAREST, GL_CLAMP, NULL, true);
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.2) - Load class avatar face textures (OZT with native alpha)
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_sm.tga", CUSTOM_CHANGE_CLASS_FACE_SM, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_sm.tga", CUSTOM_CHANGE_CLASS_FACE_SM, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_bk.tga", CUSTOM_CHANGE_CLASS_FACE_BK, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_bk.tga", CUSTOM_CHANGE_CLASS_FACE_BK, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_me.tga", CUSTOM_CHANGE_CLASS_FACE_ME, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_me.tga", CUSTOM_CHANGE_CLASS_FACE_ME, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenTGA("Custom\\Interface\\CustomClass\\face_mg.tga", CUSTOM_CHANGE_CLASS_FACE_MG, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenTGA("Custom\\Interface\\face_mg.tga", CUSTOM_CHANGE_CLASS_FACE_MG, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.1) - Load CustomClass_Frame texture (OZT with native alpha or fallback)
+	if (!OpenTGA("Custom\\Interface\\CustomClass_Frame.tga", CUSTOM_CHANGE_CLASS_FRAME, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		if (!OpenTGA("Custom\\Interface\\CustomClass\\CustomClass_Frame.tga", CUSTOM_CHANGE_CLASS_FRAME, GL_NEAREST, GL_CLAMP, NULL, false))
+		{
+			if (!OpenJPG("Custom\\Interface\\CustomClass_Frame.jpg", CUSTOM_CHANGE_CLASS_FRAME, GL_NEAREST, GL_CLAMP, NULL, false))
+			{
+				OpenJPG("Custom\\Interface\\CustomClass\\CustomClass_Frame.jpg", CUSTOM_CHANGE_CLASS_FRAME, GL_NEAREST, GL_CLAMP, NULL, true);
+			}
+		}
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.3) - Load TC button textures from Custom\Interface\CustomClass
+	if (!OpenJPG("Custom\\Interface\\CustomClass\\Mix_button1.jpg", CUSTOM_CHANGE_CLASS_BTN_NORMAL, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenJPG("Interface\\Mix_button1.jpg", CUSTOM_CHANGE_CLASS_BTN_NORMAL, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
+
+	if (!OpenJPG("Custom\\Interface\\CustomClass\\Mix_button2.jpg", CUSTOM_CHANGE_CLASS_BTN_CLICK, GL_NEAREST, GL_CLAMP, NULL, false))
+	{
+		OpenJPG("Interface\\Mix_button2.jpg", CUSTOM_CHANGE_CLASS_BTN_CLICK, GL_NEAREST, GL_CLAMP, NULL, true);
+	}
 }
 
 void CCustomChangeClass::Toggle()
@@ -59,6 +115,7 @@ void CCustomChangeClass::Open()
 		return;
 	}
 
+	this->m_CurrentFaceModel = -1;
 	this->m_Active = true;
 }
 
@@ -123,60 +180,28 @@ void CCustomChangeClass::RenderCharacterButton()
 	}
 
 	// In 97K 640x480 coordinate space, Character window is at X=450, Y=0 (width 190, height 433)
-	// Close button [X] is at X=468, Y=390. Mirrored slot on bottom right is at X=578, Y=390.
+	// Close button [X] is at X=475, Y=395 (24x24). Mirrored button on bottom right is at X=578, Y=395.
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.5) - Align button vertically with native close button
 	float btX = 578.0f;
-	float btY = 390.0f;
+	float btY = 395.0f;
 	float btW = 24.0f;
 	float btH = 24.0f;
 
 	bool bHover = this->IsWorkZone(btX, btY, btW, btH);
 
-	// Disable textures for solid OpenGL color drawing
-	glDisable(GL_TEXTURE_2D);
-	EnableAlphaTest(true);
-
-	if (bHover)
-	{
-		// Golden glowing border
-		glColor4f(0.85f, 0.70f, 0.15f, 0.90f);
-		RenderColor(btX - 1.0f, btY - 1.0f, btW + 2.0f, btH + 2.0f);
-
-		// Button background
-		glColor4f(0.20f, 0.20f, 0.25f, 0.95f);
-		RenderColor(btX, btY, btW, btH);
-	}
-	else
-	{
-		// Subtle dark golden border
-		glColor4f(0.50f, 0.40f, 0.15f, 0.75f);
-		RenderColor(btX - 1.0f, btY - 1.0f, btW + 2.0f, btH + 2.0f);
-
-		// Button background
-		glColor4f(0.10f, 0.10f, 0.12f, 0.90f);
-		RenderColor(btX, btY, btW, btH);
-	}
-
-	// Reset OpenGL color and re-enable textures for text/tooltips
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.3) - Render native Mix_button texture for TC button
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
-	DisableAlphaBlend();
+	EnableAlphaTest(true);
+
+	int btnTexture = (bHover && (MouseLButton || MouseLButtonPush)) ? CUSTOM_CHANGE_CLASS_BTN_CLICK : CUSTOM_CHANGE_CLASS_BTN_NORMAL;
+	RenderBitmap(btnTexture, btX, btY, btW, btH, (0.0f / 64.0f), (0.0f / 32.0f), (44.0f / 64.0f), (32.0f / 32.0f), true, true);
 
 	// Show tooltip on hover
 	if (bHover)
 	{
 		pRenderTipText((int)btX - 25, (int)btY - 13, "Trocar classe");
 	}
-
-	// Draw button text transparently without background box
-	DWORD dwOldColor = SetTextColor;
-	DWORD dwOldBgColor = SetBackgroundTextColor;
-	HFONT hOldFont = (HFONT)SelectObject(m_hFontDC, g_hFontBold);
-
-	this->DrawTextCenter((int)btX, (int)btY + 6, (int)btW, g_hFontBold, bHover ? RGBA_TEXT(255, 255, 255, 255) : RGBA_TEXT(255, 204, 0, 255), "TC");
-
-	SelectObject(m_hFontDC, hOldFont);
-	SetTextColor = dwOldColor;
-	SetBackgroundTextColor = dwOldBgColor;
 
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
@@ -202,161 +227,130 @@ void CCustomChangeClass::RenderChangeClassWindow()
 		JanelaX = (640.0f - Largura) / 2.0f;
 	}
 
-	// 1. Disable textures so quads are clean solid colored shapes
-	glDisable(GL_TEXTURE_2D);
+	// 1. Render Window Background Texture (back_middle.jpg / back_middle.ozj)
+	// Update Kayito 92 2.4.9 -> 97K SSeMU Update (3.1.8) - Render window background texture
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_TEXTURE_2D);
 	EnableAlphaTest(true);
 
-	// Outer gold border
-	glColor4f(0.85f, 0.70f, 0.15f, 0.70f);
-	RenderColor(JanelaX - 1.0f, JanelaY - 1.0f, Largura + 2.0f, Altura + 2.0f);
+	RenderBitmap(CUSTOM_CHANGE_CLASS_BG_TEXTURE, JanelaX, JanelaY, Largura, Altura, 0.0f, 0.0f, (1024.0f / 1024.0f), (851.0f / 1024.0f), true, true);
 
-	// Main window background (dark semitransparent stone)
-	glColor4f(0.08f, 0.08f, 0.10f, 0.94f);
-	RenderColor(JanelaX, JanelaY, Largura, Altura);
-
-	// Header title bar
-	glColor4f(0.15f, 0.15f, 0.20f, 0.95f);
-	RenderColor(JanelaX, JanelaY, Largura, 26.0f);
-
-	glColor4f(0.85f, 0.70f, 0.15f, 0.90f);
-	RenderColor(JanelaX, JanelaY + 25.0f, Largura, 1.0f);
-
-	// Close [X] button at top-right
+	// Close button at top-right
 	float closeX = JanelaX + Largura - 22.0f;
 	float closeY = JanelaY + 4.0f;
 	float closeW = 18.0f;
 	float closeH = 18.0f;
 	bool bCloseHover = this->IsWorkZone(closeX, closeY, closeW, closeH);
 
-	glColor4f(bCloseHover ? 0.80f : 0.35f, 0.15f, 0.15f, 0.90f);
-	RenderColor(closeX, closeY, closeW, closeH);
+	// 2. CustomClass_Frame Coordinates (Proportionally scaled down and centered)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.0) - Proportional scaling and centering
+	float frameW = 96.0f;
+	float frameH = 128.0f;
+	float frameX = JanelaX + (Largura - frameW) / 2.0f;
+	float frameY = JanelaY + 34.0f;
 
-	// 2. Center Character Head Preview Box (Simulates NEW CHARACTER screen avatar box)
-	float boxW = 84.0f;
-	float boxH = 84.0f;
-	float boxX = JanelaX + (Largura - boxW) / 2.0f;
-	float boxY = JanelaY + 36.0f;
-
-	// Gold outer frame for avatar
-	glColor4f(0.85f, 0.70f, 0.15f, 0.95f);
-	RenderColor(boxX - 2.0f, boxY - 2.0f, boxW + 4.0f, boxH + 4.0f);
-
-	// Pure deep black background for character head
-	glColor4f(0.02f, 0.02f, 0.03f, 0.98f);
-	RenderColor(boxX, boxY, boxW, boxH);
-
-	// Subtle inner border
-	glColor4f(0.30f, 0.30f, 0.38f, 0.50f);
-	RenderColor(boxX + 2.0f, boxY + 2.0f, boxW - 4.0f, boxH - 4.0f);
-
-	// Re-darken center
-	glColor4f(0.02f, 0.02f, 0.03f, 0.98f);
-	RenderColor(boxX + 3.0f, boxY + 3.0f, boxW - 6.0f, boxH - 6.0f);
-
-	// 3. Navigation Arrow Buttons [<] and [>] on sides of the avatar box
-	float arrowW = 26.0f;
-	float arrowH = 34.0f;
-	float arrowLeftX = JanelaX + 22.0f;
-	float arrowY = boxY + (boxH - arrowH) / 2.0f;
-	float arrowRightX = JanelaX + Largura - 22.0f - arrowW;
+	// Navigation Arrow Buttons (Symmetrically centered in the side margins)
+	float arrowW = 20.0f;
+	float arrowH = 20.0f;
+	float arrowLeftX = JanelaX + 23.5f;
+	float arrowRightX = JanelaX + Largura - 23.5f - arrowW;
+	float arrowY = frameY + 37.0f;
 
 	bool bLeftHover = this->IsWorkZone(arrowLeftX, arrowY, arrowW, arrowH);
 	bool bRightHover = this->IsWorkZone(arrowRightX, arrowY, arrowW, arrowH);
 
-	// Left Arrow Button [<]
-	glColor4f(bLeftHover ? 0.85f : 0.40f, bLeftHover ? 0.70f : 0.40f, bLeftHover ? 0.15f : 0.45f, 0.90f);
-	RenderColor(arrowLeftX - 1.0f, arrowY - 1.0f, arrowW + 2.0f, arrowH + 2.0f);
-
-	glColor4f(bLeftHover ? 0.18f : 0.12f, bLeftHover ? 0.40f : 0.14f, bLeftHover ? 0.22f : 0.18f, 0.90f);
-	RenderColor(arrowLeftX, arrowY, arrowW, arrowH);
-
-	// Right Arrow Button [>]
-	glColor4f(bRightHover ? 0.85f : 0.40f, bRightHover ? 0.70f : 0.40f, bRightHover ? 0.15f : 0.45f, 0.90f);
-	RenderColor(arrowRightX - 1.0f, arrowY - 1.0f, arrowW + 2.0f, arrowH + 2.0f);
-
-	glColor4f(bRightHover ? 0.18f : 0.12f, bRightHover ? 0.40f : 0.14f, bRightHover ? 0.22f : 0.18f, 0.90f);
-	RenderColor(arrowRightX, arrowY, arrowW, arrowH);
-
-	// 4. Class Name Display Bar below the avatar box
-	float nameW = Largura - 44.0f;
-	float nameH = 22.0f;
-	float nameX = JanelaX + 22.0f;
-	float nameY = boxY + boxH + 8.0f;
-
-	// Gold frame for class name bar
-	glColor4f(0.85f, 0.70f, 0.15f, 0.85f);
-	RenderColor(nameX - 1.0f, nameY - 1.0f, nameW + 2.0f, nameH + 2.0f);
-
-	// Dark fill
-	glColor4f(0.10f, 0.12f, 0.16f, 0.95f);
-	RenderColor(nameX, nameY, nameW, nameH);
-
-	// 5. Action buttons at the bottom (CONFIRMAR and CANCELAR)
-	float confX = JanelaX + 15.0f;
-	float confY = JanelaY + 230.0f;
-	float confW = 95.0f;
-	float confH = 26.0f;
+	// Action button at the bottom (CONFIRMAR compact and centered with native texture 0xF0)
+	float confW = 96.0f;
+	float confH = 22.0f;
+	float confX = JanelaX + (Largura - confW) / 2.0f;
+	float confY = JanelaY + 234.0f;
 	bool bConfHover = this->IsWorkZone(confX, confY, confW, confH);
 
-	float cancX = JanelaX + Largura - 110.0f;
-	float cancY = JanelaY + 230.0f;
-	float cancW = 95.0f;
-	float cancH = 26.0f;
-	bool bCancHover = this->IsWorkZone(cancX, cancY, cancW, cancH);
-
-	// Confirm button quad
-	glColor4f(bConfHover ? 0.35f : 0.20f, bConfHover ? 0.95f : 0.70f, bConfHover ? 0.45f : 0.30f, 0.95f);
-	RenderColor(confX - 1.0f, confY - 1.0f, confW + 2.0f, confH + 2.0f);
-
-	glColor4f(bConfHover ? 0.18f : 0.10f, bConfHover ? 0.55f : 0.35f, bConfHover ? 0.22f : 0.15f, 0.92f);
-	RenderColor(confX, confY, confW, confH);
-
-	// Cancel button quad
-	glColor4f(bCancHover ? 0.95f : 0.70f, bCancHover ? 0.35f : 0.20f, bCancHover ? 0.35f : 0.20f, 0.95f);
-	RenderColor(cancX - 1.0f, cancY - 1.0f, cancW + 2.0f, cancH + 2.0f);
-
-	glColor4f(bCancHover ? 0.55f : 0.35f, bCancHover ? 0.15f : 0.10f, bCancHover ? 0.15f : 0.10f, 0.92f);
-	RenderColor(cancX, cancY, cancW, cancH);
-
-	// 6. Re-enable textures and reset OpenGL states before drawing texts
+	// 3. Re-enable textures and reset OpenGL states before drawing textures and texts
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_TEXTURE_2D);
-	EnableAlphaTest(false);
 	EnableAlphaTest(true);
 
-	// Backup font and text colors
+	// 1. Render native close button (0x118 = exit_01.jpg normal/hover, 0x119 = exit_02.jpg pressed/clicked)
+	// Update Kayito 92 2.4.9 -> 97K SSeMU Update (3.1.8) - Render native Close button with pressed state on click
+	int closeTexture = (bCloseHover && (MouseLButton || MouseLButtonPush)) ? 0x119 : 0x118;
+	RenderBitmap(closeTexture, closeX, closeY, closeW, closeH, (0.0f / 32.0f), (0.0f / 32.0f), (24.0f / 32.0f), (24.0f / 32.0f), true, true);
+
+	// 2. Render native confirm button texture (0xF0 = Interface\Message_box.jpg)
+	// Update Kayito 92 2.4.9 -> 97K SSeMU Update (3.1.8) - Render native Message_box button
+	RenderBitmap(0xF0, confX, confY, confW, confH, (0.0f / 256.0f), (0.0f / 64.0f), (213.0f / 256.0f), (64.0f / 64.0f), true, true);
+
+	// Show close tooltip on hover
+	if (bCloseHover)
+	{
+		pRenderTipText((int)closeX - 15, (int)closeY - 13, "Fechar");
+	}
+
+	// 3. Render native left arrow (0xFE = back1.jpg normal, 0xFF = back2.jpg hover, 0x100 = back3.jpg pressed)
+	// Update Kayito 92 2.4.9 -> 97K SSeMU Update (3.1.8) - Render native left arrow button
+	int leftArrowTexture = 0xFE;
+	if (bLeftHover)
+	{
+		leftArrowTexture = (MouseLButton || MouseLButtonPush) ? 0x100 : 0xFF;
+	}
+	RenderBitmap(leftArrowTexture, arrowLeftX, arrowY, arrowW, arrowH, (0.0f / 32.0f), (0.0f / 32.0f), (32.0f / 32.0f), (32.0f / 32.0f), true, true);
+
+	// 4. Render native right arrow (flipped horizontally: u = 32/32, uWidth = -32/32)
+	// Update Kayito 92 2.4.9 -> 97K SSeMU Update (3.1.8) - Render native right arrow button
+	int rightArrowTexture = 0xFE;
+	if (bRightHover)
+	{
+		rightArrowTexture = (MouseLButton || MouseLButtonPush) ? 0x100 : 0xFF;
+	}
+	RenderBitmap(rightArrowTexture, arrowRightX, arrowY, arrowW, arrowH, (32.0f / 32.0f), (0.0f / 32.0f), (-32.0f / 32.0f), (32.0f / 32.0f), true, true);
+
+	// 5. Render Class Avatar Face Texture (Inside upper frame box)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.2) - Render selected class avatar inside frame
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_TEXTURE_2D);
+	EnableAlphaTest(true);
+
+	float avatarW = 80.0f;
+	float avatarH = 80.0f;
+	float avatarX = frameX + (frameW - avatarW) / 2.0f;
+	float avatarY = frameY + 7.0f;
+	int faceTexture = CUSTOM_CHANGE_CLASS_FACE_BK;
+	switch (this->m_SelectedClass)
+	{
+		case 0: faceTexture = CUSTOM_CHANGE_CLASS_FACE_BK; break; // Blade Knight
+		case 1: faceTexture = CUSTOM_CHANGE_CLASS_FACE_SM; break; // Soul Master
+		case 2: faceTexture = CUSTOM_CHANGE_CLASS_FACE_ME; break; // Muse Elf
+		case 3: faceTexture = CUSTOM_CHANGE_CLASS_FACE_MG; break; // Magic Gladiator
+	}
+	RenderBitmap(faceTexture, avatarX, avatarY, avatarW, avatarH, 0.0f, 0.0f, 1.0f, 1.0f, true, true);
+
+	// 6. Render CustomClass_Frame texture (Overlaying the avatar as an elegant golden frame)
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.1) - Render CustomClass_Frame texture with native alpha channel
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_TEXTURE_2D);
+	EnableAlphaTest(true);
+	RenderBitmap(CUSTOM_CHANGE_CLASS_FRAME, frameX, frameY, frameW, frameH, (30.0f / 256.0f), (24.0f / 256.0f), (152.0f / 256.0f), (203.0f / 256.0f), true, true);
+
+	// 7. Backup font and text colors
 	HFONT hOldFont = (HFONT)SelectObject(m_hFontDC, g_hFont);
 	DWORD dwOldColor = SetTextColor;
 	DWORD dwOldBgColor = SetBackgroundTextColor;
 
-	// Title text (Centered)
-	this->DrawTextCenter((int)JanelaX, (int)JanelaY + 6, (int)Largura, g_hFontBig, RGBA_TEXT(255, 204, 0, 255), "TROCAR DE CLASSE");
+	// Title text (Centered - Golden Archer style)
+	this->DrawTextCenter((int)JanelaX, (int)JanelaY + 6, (int)Largura, g_hFontBold, RGBA_TEXT(225, 225, 225, 255), "Trocar de Classe");
 
-	// Close [X] text (Centered)
-	this->DrawTextCenter((int)closeX, (int)closeY + 3, (int)closeW, g_hFontBold, RGBA_TEXT(255, 255, 255, 255), "X");
-
-	// Arrow symbols [<] and [>]
-	this->DrawTextCenter((int)arrowLeftX, (int)arrowY + 10, (int)arrowW, g_hFontBig, bLeftHover ? RGBA_TEXT(255, 255, 255, 255) : RGBA_TEXT(255, 204, 0, 255), "<");
-	this->DrawTextCenter((int)arrowRightX, (int)arrowY + 10, (int)arrowW, g_hFontBig, bRightHover ? RGBA_TEXT(255, 255, 255, 255) : RGBA_TEXT(255, 204, 0, 255), ">");
-
-	// Inside avatar box: draw class tag and preview indicator
-	char szTag[16];
-	wsprintf(szTag, "[ %s ]", s_Classes[this->m_SelectedClass].Tag);
-	this->DrawTextCenter((int)boxX, (int)boxY + 22, (int)boxW, g_hFontBig, RGBA_TEXT(255, 204, 0, 255), szTag);
-	this->DrawTextCenter((int)boxX, (int)boxY + 50, (int)boxW, g_hFont, RGBA_TEXT(150, 150, 170, 255), "Avatar Face");
-
-	// Class Name inside the display bar
-	this->DrawTextCenter((int)nameX, (int)nameY + 5, (int)nameW, g_hFontBold, RGBA_TEXT(255, 215, 0, 255), s_Classes[this->m_SelectedClass].Name);
+	// Class Name inside the frame bottom box
+	float nameY = frameY + 109.0f;
+	this->DrawTextCenter((int)frameX, (int)nameY, (int)frameW, g_hFontBold, RGBA_TEXT(255, 215, 0, 255), s_Classes[this->m_SelectedClass].Name);
 
 	// Informational Requirements Text (Centered horizontally in window)
-	float infoY = nameY + nameH + 12.0f;
+	float infoY = frameY + frameH + 8.0f;
 	this->DrawTextCenter((int)JanelaX, (int)infoY, (int)Largura, g_hFont, RGBA_TEXT(225, 225, 225, 255), "A troca de classe e apenas para VIP");
-	this->DrawTextCenter((int)JanelaX, (int)infoY + 16, (int)Largura, g_hFont, RGBA_TEXT(190, 190, 190, 255), "VIP possui vantagens e mantem o servidor");
-	this->DrawTextCenter((int)JanelaX, (int)infoY + 32, (int)Largura, g_hFont, RGBA_TEXT(255, 140, 100, 255), "Desequipe todos os itens antes de trocar");
+	this->DrawTextCenter((int)JanelaX, (int)(infoY + 14.0f), (int)Largura, g_hFont, RGBA_TEXT(190, 190, 190, 255), "VIP possui vantagens e mantem o servidor");
+	this->DrawTextCenter((int)JanelaX, (int)(infoY + 28.0f), (int)Largura, g_hFont, RGBA_TEXT(255, 140, 100, 255), "Desequipe todos os itens antes de trocar");
 
-	// Action button texts (Centered inside button borders)
-	this->DrawTextCenter((int)confX, (int)confY + 7, (int)confW, g_hFontBold, bConfHover ? RGBA_TEXT(255, 255, 255, 255) : RGBA_TEXT(220, 255, 220, 255), "CONFIRMAR");
-	this->DrawTextCenter((int)cancX, (int)cancY + 7, (int)cancW, g_hFontBold, bCancHover ? RGBA_TEXT(255, 255, 255, 255) : RGBA_TEXT(200, 255, 200, 255), "CANCELAR");
+	// Action button text (Centered inside native button)
+	this->DrawTextCenter((int)confX, (int)(confY + 5.0f), (int)confW, g_hFontBold, bConfHover ? RGBA_TEXT(255, 255, 255, 255) : RGBA_TEXT(220, 220, 220, 255), "CONFIRMAR");
 
 	// Restore font and text colors
 	SelectObject(m_hFontDC, hOldFont);
@@ -375,11 +369,12 @@ void CCustomChangeClass::UpdateMouse()
 		return;
 	}
 
-	// 1. Mouse check for button in Character Status window (X=578, Y=390, 24x24)
+	// 1. Mouse check for button in Character Status window (X=578, Y=395, 24x24)
 	if (CharacterOpened == 1)
 	{
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.5) - Align click zone vertically with native close button
 		float btX = 578.0f;
-		float btY = 390.0f;
+		float btY = 395.0f;
 		float btW = 24.0f;
 		float btH = 24.0f;
 
@@ -438,14 +433,14 @@ void CCustomChangeClass::UpdateMouse()
 			}
 		}
 
-		// Navigation Arrows [<] and [>]
-		float boxH = 84.0f;
-		float boxY = JanelaY + 36.0f;
-		float arrowW = 26.0f;
-		float arrowH = 34.0f;
-		float arrowLeftX = JanelaX + 22.0f;
-		float arrowY = boxY + (boxH - arrowH) / 2.0f;
-		float arrowRightX = JanelaX + Largura - 22.0f - arrowW;
+		// Navigation Arrows [<] and [>] (Symmetrically centered in the side margins)
+		float frameH = 128.0f;
+		float frameY = JanelaY + 34.0f;
+		float arrowW = 20.0f;
+		float arrowH = 20.0f;
+		float arrowLeftX = JanelaX + 23.5f;
+		float arrowRightX = JanelaX + Largura - 23.5f - arrowW;
+		float arrowY = frameY + 37.0f;
 
 		// Left Arrow [<] click
 		if (this->IsWorkZone(arrowLeftX, arrowY, arrowW, arrowH))
@@ -471,11 +466,11 @@ void CCustomChangeClass::UpdateMouse()
 			}
 		}
 
-		// Confirm button
-		float confX = JanelaX + 15.0f;
-		float confY = JanelaY + 230.0f;
-		float confW = 95.0f;
-		float confH = 26.0f;
+		// Confirm button (Compact and centered)
+		float confW = 96.0f;
+		float confH = 22.0f;
+		float confX = JanelaX + (Largura - confW) / 2.0f;
+		float confY = JanelaY + 234.0f;
 
 		if (this->IsWorkZone(confX, confY, confW, confH))
 		{
@@ -484,23 +479,6 @@ void CCustomChangeClass::UpdateMouse()
 				MouseLButtonPush = false;
 				PlayBuffer(25, 0, 0);
 				this->ConfirmChange();
-				return;
-			}
-		}
-
-		// Cancel button
-		float cancX = JanelaX + Largura - 110.0f;
-		float cancY = JanelaY + 230.0f;
-		float cancW = 95.0f;
-		float cancH = 26.0f;
-
-		if (this->IsWorkZone(cancX, cancY, cancW, cancH))
-		{
-			if (MouseLButtonPush)
-			{
-				MouseLButtonPush = false;
-				PlayBuffer(25, 0, 0);
-				this->Close();
 				return;
 			}
 		}
@@ -514,13 +492,18 @@ void CCustomChangeClass::ConfirmChange()
 		return;
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Anti-spam rate limit on Confirm button (3 seconds)
+	if ((GetTickCount() - this->m_LastConfirmTime) < 3000)
+	{
+		return;
+	}
+	this->m_LastConfirmTime = GetTickCount();
+
 	// Update CMZ 17 (3.1.7) 28-09-26 - Send class change request packet
 	PMSG_CUSTOM_CHANGE_CLASS_REQ pMsg;
 	pMsg.h.set(0xF3, 0xE5, sizeof(pMsg));
 	pMsg.TargetClass = (BYTE)s_Classes[this->m_SelectedClass].ClassCode;
 	DataSend((BYTE*)&pMsg, pMsg.h.size);
-
-	this->Close();
 }
 
 // Update CMZ 17 (3.1.7) 28-09-26 - Receive class change response packet

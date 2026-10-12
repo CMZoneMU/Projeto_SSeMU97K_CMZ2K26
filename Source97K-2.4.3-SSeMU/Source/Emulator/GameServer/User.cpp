@@ -551,6 +551,8 @@ void gObjCharZeroSet(int aIndex) // OK
 	lpObj->Pick.ItemCount = 0;
 
 	lpObj->WindowTimeOpen = false;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.2.6) - Reset class change cooldown
+	lpObj->CustomChangeClassTime = 0;
 	// Update 90 2.4.8 -> 97K - EventFlag e EventLevel
 	lpObj->EventFlag = 0;
 	lpObj->EventLevel = (BYTE)-1;

@@ -42,6 +42,12 @@
 #define GuildOpened *(BYTE*)0x07EAA114
 #define CharacterOpened *(BYTE*)0x07EAA116
 #define PartyOpened *(BYTE*)0x07EAA115
+#define ShopOpened *(BYTE*)0x07EAA118
+#define WarehouseOpened *(BYTE*)0x07EAA119
+#define ChaosMixOpened *(BYTE*)0x07EAA11A
+#define TradeOpened *(BYTE*)0x07EAA11B
+#define EventWindowOpened *(BYTE*)0x07EAA11C
+#define GuildCreatorOpened *(BYTE*)0x07EAA124
 #define ErrorMessage *(BYTE*)0x083A7C24
 
 // Drawing

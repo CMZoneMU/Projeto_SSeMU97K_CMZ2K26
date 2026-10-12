@@ -25,6 +25,16 @@ struct CHANGE_CLASS_INFO
 	char Tag[8];
 };
 
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 93 (3.1.9) - Texture definitions
+#define CUSTOM_CHANGE_CLASS_BG_TEXTURE   5000
+#define CUSTOM_CHANGE_CLASS_FACE_SM      5001
+#define CUSTOM_CHANGE_CLASS_FACE_BK      5002
+#define CUSTOM_CHANGE_CLASS_FACE_ME      5003
+#define CUSTOM_CHANGE_CLASS_FACE_MG      5004
+#define CUSTOM_CHANGE_CLASS_FRAME        5005
+#define CUSTOM_CHANGE_CLASS_BTN_NORMAL   5006
+#define CUSTOM_CHANGE_CLASS_BTN_CLICK    5007
+
 class CCustomChangeClass
 {
 public:
@@ -32,6 +42,7 @@ public:
 	virtual ~CCustomChangeClass();
 
 	void Init();
+	void LoadImages();
 	void Toggle();
 	void Open();
 	void Close();
@@ -54,6 +65,8 @@ private:
 private:
 	bool m_Active;
 	int m_SelectedClass;
+	int m_CurrentFaceModel;
+	DWORD m_LastConfirmTime;
 };
 
 extern CCustomChangeClass gCustomChangeClass;
