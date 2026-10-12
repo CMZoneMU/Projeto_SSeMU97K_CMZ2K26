@@ -358,7 +358,8 @@ void CChaosBox::PlusItemLevelMix(LPOBJ lpObj,int type) // OK
 
 		this->GCChaosMixSend(lpObj->Index,1,&item);
 
-		gObjCustomLogPlusChaosMix(lpObj,type,item.m_Index);
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Chamada com item.m_Index e item.m_Level
+		gObjCustomLogPlusChaosMix(lpObj,item.m_Index,item.m_Level);
 
 		gLog.Output(LOG_CHAOS_MIX,"[PlusItemLevelMix][Success][%s][%s] - (Type: %d,ChaosSuccessRate: %d,ChaosMoney: %d)",lpObj->Account,lpObj->Name,type,lpObj->ChaosSuccessRate,lpObj->ChaosMoney);
 	}

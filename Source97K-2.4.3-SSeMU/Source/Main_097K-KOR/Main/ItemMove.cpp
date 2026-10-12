@@ -282,5 +282,31 @@ BYTE GetInventoryWearSlot(DWORD Item) // OK
 		bEquipable = false;
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Sincronizacao de requisitos de atributos ao equipar com clique direito
+	CHARACTER_ATTRIBUTE* lpChar = (CHARACTER_ATTRIBUTE*)(*(DWORD*)(MAIN_CHARACTER_STRUCT));
+
+	if(lpChar != 0)
+	{
+		if(lpChar->Level < lpItemInfo->RequireLevel)
+		{
+			bEquipable = false;
+		}
+
+		if(lpChar->Strength < lpItemInfo->RequireStrength)
+		{
+			bEquipable = false;
+		}
+
+		if(lpChar->Dexterity < lpItemInfo->RequireDexterity)
+		{
+			bEquipable = false;
+		}
+
+		if(lpChar->Energy < lpItemInfo->RequireEnergy)
+		{
+			bEquipable = false;
+		}
+	}
+
 	return ((bEquipable) ? slot : 0xFF);
 }

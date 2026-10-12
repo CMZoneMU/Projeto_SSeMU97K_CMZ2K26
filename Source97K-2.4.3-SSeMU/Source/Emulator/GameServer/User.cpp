@@ -2904,23 +2904,23 @@ void gObjUseDrink(LPOBJ lpObj,int level) // OK
 	}
 }
 
-void gObjCustomLogPlusChaosMix(LPOBJ lpObj,int type,int index) // OK
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Ampliadas as opcoes de ChaosMixPlusItemAnnounce de 1 ate 4
+void gObjCustomLogPlusChaosMix(LPOBJ lpObj,int index,int level) // OK
 {
-	if(type != 1)
+	switch(gServerInfo.m_ChaosMixPlusItemAnnounce)
 	{
-		return;
-	}
-
-	if(gServerInfo.m_ChaosMixPlusItemAnnounce != 0)
-	{
-		if(gServerInfo.m_ChaosMixPlusItemAnnounce == 1)
-		{
-			gNotice.GCNoticeSendToAll(0,0,0,0,0,0,gMessage.GetMessage(500),lpObj->Name,gItemManager.GetItemName(index,(type+10)),(type+10));
-		}
-		else
-		{
-			GDGlobalNoticeSend(0,0,0,0,0,0,gMessage.GetMessage(500),lpObj->Name,gItemManager.GetItemName(index,(type+10)),(type+10));
-		}
+		case 1:
+			if(level == MAX_ITEM_LEVEL){gNotice.GCNoticeSendToAll(0,0,0,0,0,0,gMessage.GetMessage(500),lpObj->Name,gItemManager.GetItemName(index,level),level);}
+			break;
+		case 2:
+			if(level == MAX_ITEM_LEVEL){GDGlobalNoticeSend(0,0,0,0,0,0,gMessage.GetMessage(500),lpObj->Name,gItemManager.GetItemName(index,level),level);}
+			break;
+		case 3:
+			gNotice.GCNoticeSendToAll(0,0,0,0,0,0,gMessage.GetMessage(500),lpObj->Name,gItemManager.GetItemName(index,level),level);
+			break;
+		case 4:
+			GDGlobalNoticeSend(0,0,0,0,0,0,gMessage.GetMessage(500),lpObj->Name,gItemManager.GetItemName(index,level),level);
+			break;
 	}
 }
 

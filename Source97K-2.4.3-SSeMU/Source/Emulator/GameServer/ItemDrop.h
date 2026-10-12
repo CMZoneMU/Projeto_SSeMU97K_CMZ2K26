@@ -22,8 +22,8 @@ struct ITEM_DROP_INFO
 	int MonsterClass;
 	int MonsterLevelMin;
 	int MonsterLevelMax;
-	int AccountLevel;
-	int DropRate;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - DropRate por nivel VIP (MAX_ACCOUNT_LEVEL)
+	int DropRate[MAX_ACCOUNT_LEVEL];
 };
 
 class CItemDrop

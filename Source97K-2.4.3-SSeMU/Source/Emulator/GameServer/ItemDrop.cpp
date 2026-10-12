@@ -93,9 +93,14 @@ void CItemDrop::Load(char* path) // OK
 
 			info.MonsterLevelMax = lpMemScript->GetAsNumber();
 
-			info.AccountLevel = lpMemScript->GetAsNumber();
+			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Leitura do DropRate por nivel VIP (0~3)
+			info.DropRate[0] = lpMemScript->GetAsNumber();
 
-			info.DropRate = lpMemScript->GetAsNumber();
+			info.DropRate[1] = lpMemScript->GetAsNumber();
+
+			info.DropRate[2] = lpMemScript->GetAsNumber();
+
+			info.DropRate[3] = lpMemScript->GetAsNumber();
 
 			this->m_ItemDropInfo.push_back(info);
 		}
@@ -146,13 +151,8 @@ int CItemDrop::DropItem(LPOBJ lpObj,LPOBJ lpTarget) // OK
 			continue;
 		}
 
-		if(it->AccountLevel != -1 && it->AccountLevel != lpTarget->AccountLevel)
-		{
-			continue;
-		}
-
-		// Update 91 2.4.9 -> 97K - Prevencao de divisao por zero na taxa de drop
-		int DropRate = it->DropRate;
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - DropRate baseado no AccountLevel do alvo (0~3)
+		int DropRate = it->DropRate[lpTarget->AccountLevel];
 
 		if(DropRate != 0 && (DropRate == -1 || (GetLargeRand()%1000000) < DropRate))
 		{
