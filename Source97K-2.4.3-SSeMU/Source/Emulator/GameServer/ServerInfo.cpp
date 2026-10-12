@@ -23,6 +23,7 @@
 #include "CustomMonsterKillCount.h"
 #include "CustomPick.h"
 #include "DamageTable.h"
+#include "DiePenalty.h"
 #include "DefaultClassInfo.h"
 #include "DefaultClassFreebies.h"
 #include "DevilSquare.h"
@@ -170,6 +171,9 @@ void CServerInfo::ReadCommonInfo() // OK
 	gMapManager.Load(gPath.GetFullPath("MapManager.txt"));
 
 	gMapRateInfo.Load(gPath.GetFullPath("MapRateInfo.txt"));
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - Carregamento do sistema estendido DiePenalty.txt
+	gDiePenalty.Load(gPath.GetFullPath("DiePenalty.txt"));
 }
 
 void CServerInfo::ReadCustomInfo() // OK
@@ -1168,28 +1172,7 @@ void CServerInfo::ReadCommonInfo(char* section,char* path) // OK
 
 	this->m_MonsterGetTopHitDamageUserMaxTime = GetPrivateProfileInt(section,"MonsterGetTopHitDamageUserMaxTime",0,path);
 
-	this->m_ExperienceDeduceRate1 = GetPrivateProfileInt(section,"ExperienceDeduceRate1",0,path);
-	this->m_ExperienceDeduceRate2 = GetPrivateProfileInt(section,"ExperienceDeduceRate2",0,path);
-	this->m_ExperienceDeduceRate3 = GetPrivateProfileInt(section,"ExperienceDeduceRate3",0,path);
-	this->m_ExperienceDeduceRate4 = GetPrivateProfileInt(section,"ExperienceDeduceRate4",0,path);
-	this->m_ExperienceDeduceRate5 = GetPrivateProfileInt(section,"ExperienceDeduceRate5",0,path);
-	
-	this->m_DropItemRate1 = GetPrivateProfileInt(section,"DropItemRate1",0,path);
-	this->m_DropItemRate2 = GetPrivateProfileInt(section,"DropItemRate2",0,path);
-	this->m_DropItemRate3 = GetPrivateProfileInt(section,"DropItemRate3",0,path);
-	this->m_DropItemRate4 = GetPrivateProfileInt(section,"DropItemRate4",0,path);
-	this->m_DropItemRate5 = GetPrivateProfileInt(section,"DropItemRate5",0,path);
-	this->m_DropItemLevel = GetPrivateProfileInt(section,"DropItemLevel",0,path);
-	
-	this->m_DropItemPet = GetPrivateProfileInt(section,"DropItemPet",0,path);
-	this->m_DropItemWing = GetPrivateProfileInt(section,"DropItemWing",0,path);
-	this->m_DropItemExc = GetPrivateProfileInt(section,"DropItemExc",0,path);
-	#if(GAMESERVER_UPDATE>=99)
-	this->m_DropItemSet = GetPrivateProfileInt(section,"DropItemSet",0,path);
-	#endif
-
-	this->m_MoneyDeduceRate = GetPrivateProfileInt(section,"MoneyDeduceRate",0,path);
-
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 105 (2.6.5) - Removidas opcoes legadas Die Penalty Settings (migradas para DiePenalty.txt)
 	this->m_NonPK = GetPrivateProfileInt(section,"NonPK",0,path);
 	this->m_PKLimitFree = GetPrivateProfileInt(section,"PKLimitFree",0,path);
 	this->m_PKLimitShop = GetPrivateProfileInt(section,"PKLimitShop",0,path);

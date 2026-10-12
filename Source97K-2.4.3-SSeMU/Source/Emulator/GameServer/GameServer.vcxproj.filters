@@ -145,6 +145,9 @@
     <ClInclude Include="ScriptLoader.h">
       <Filter>Lua</Filter>
     </ClInclude>
+    <ClInclude Include="DiePenalty.h">
+      <Filter>Others</Filter>
+    </ClInclude>
     <ClInclude Include="User.h">
       <Filter>Others</Filter>
     </ClInclude>
@@ -514,6 +517,9 @@
       <Filter>Others</Filter>
     </ClCompile>
     <ClCompile Include="Attack.cpp">
+      <Filter>Others</Filter>
+    </ClCompile>
+    <ClCompile Include="DiePenalty.cpp">
       <Filter>Others</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">

@@ -132,6 +132,7 @@
     <ClInclude Include="EventSpawnStage.h" />
     <ClInclude Include="ExcellentOptionRate.h" />
     <ClInclude Include="ExperienceTable.h" />
+    <ClInclude Include="DiePenalty.h" />
     <ClInclude Include="Filter.h" />
     <ClInclude Include="Fruit.h" />
     <ClInclude Include="GameMain.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="EventSpawnStage.cpp" />
     <ClCompile Include="ExcellentOptionRate.cpp" />
     <ClCompile Include="ExperienceTable.cpp" />
+    <ClCompile Include="DiePenalty.cpp" />
     <ClCompile Include="Filter.cpp" />
     <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="GameMain.cpp" />
