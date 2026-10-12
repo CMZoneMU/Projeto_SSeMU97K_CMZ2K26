@@ -550,6 +550,12 @@ bool CSkillManager::CheckSkillRequireLevel(LPOBJ lpObj,int index) // OK
 		return 0;
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 103 (2.6.3) - Check skill requires switch
+	if(gServerInfo.m_SkillRequiresSwitch == 0)
+	{
+		return 1;
+	}
+
 	if(lpObj->Level >= SkillInfo.RequireLevel)
 	{
 		return 1;
@@ -567,6 +573,12 @@ bool CSkillManager::CheckSkillRequireEnergy(LPOBJ lpObj,int index) // OK
 	if(this->GetInfo(index,&SkillInfo) == 0)
 	{
 		return 0;
+	}
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 103 (2.6.3) - Check skill requires switch
+	if(gServerInfo.m_SkillRequiresSwitch == 0)
+	{
+		return 1;
 	}
 
 	if((lpObj->Energy+lpObj->AddEnergy) >= SkillInfo.RequireEnergy)

@@ -1582,6 +1582,9 @@ void CServerInfo::ReadItemInfo(char* section,char* path) // OK
 
 void CServerInfo::ReadSkillInfo(char* section,char* path) // OK
 {
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 103 (2.6.3) - Read skill requires switch
+	this->m_SkillRequiresSwitch = GetPrivateProfileInt(section,"SkillRequiresSwitch",0,path);
+
 	this->m_PoisonEffectConstA = GetPrivateProfileInt(section,"PoisonEffectConstA",0,path);
 	this->m_PoisonEffectConstB = GetPrivateProfileInt(section,"PoisonEffectConstB",0,path);
 	this->m_PoisonEffectTime = GetPrivateProfileInt(section,"PoisonEffectTime",0,path);

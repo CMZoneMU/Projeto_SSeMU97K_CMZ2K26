@@ -304,6 +304,8 @@ public:
 	int m_NovaDamageConstA;
 	int m_NovaDamageConstB;
 	int m_NovaDamageConstC;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 103 (2.6.3) - Skill requires switch
+	int m_SkillRequiresSwitch;
 	int m_HPRecoveryRate[MAX_CLASS];
 	int m_MPRecoveryRate[MAX_CLASS];
 	int m_BPRecoveryRate[MAX_CLASS];
