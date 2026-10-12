@@ -2,6 +2,14 @@
 ## Inicio: 17/08/2026
 ## Créditos Source: SSeMU SetecSoft Development  
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
+
+UPDATE CMZ 26 (3.2.6) 12-10-26 / SSeMU UPDATE 107 (2.6.6):
+* Calculo Automatico de Multiplicador de Experiencia (ServerInfo.cpp): eliminadas as chaves legadas ExperienceMultiplierConstA e ExperienceMultiplierConstB do GameServerInfo - Common.dat, implementando calculo matematico dinamico e proporcional baseado em MaxLevel e MaxPetLevel (ServerInfo.cpp). [GameServer][ServerInfo.cpp][GameServerInfo - Common.dat][97KOR]
+* Expansao de MonsterIndex ate 512 no Viewport (Viewport.cpp): envio de monstros e summons no protocolo de rede 97k expandido para suportar ate 512 IDs sem alterar a estrutura oficial de 10 bytes do pacote, codificando o 9º bit em DirAndPkLevel e decodificando de forma transparente no Client Main. [GameServer][Viewport.cpp][97KOR]
+* Isolamento e Suporte Avancado de CustomMonster no Client Main: expandido MAX_MONSTER para 512 em Define.h e reescrita a alocacao de modelos em Monster.cpp para a faixa isolada MAX_MODELS + lpInfo->Index (963..1113) via gLoadModels.MyAccessModel e gLoadModels.MyOpenTexture, prevenindo qualquer sobreposicao ou colisao com itens/sets. [Client97K][Main.dll][Monster.cpp][Define.h]
+* Auditoria e Blindagem do CharSet (ObjectManager.cpp): garantida a preservacao estrita dos bits de deteccao de armaduras e asas desequipadas no pacote de visualizacao (CharSet), eliminando bugs visuais de itens ou asas fantasmas. [GameServer][ObjectManager.cpp][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 107 - Ver: 2.6.6) em stdafx.h e compilacoes Win32 em modo Release (GameServer97k.exe e Main.dll) concluidas com 0 erros. [GameServer][Main.dll][stdafx.h][GameServer97k.exe][97KOR]
+
 UPDATE CMZ 25 (3.2.5) 12-10-26 / SSeMU UPDATE 106 (2.6.5-1):
 * Missoes Repetitivas e Incrementais (CustomMonsterKillCount): padronizado cabecalho e demonstracao de Data\Custom\CustomMonsterKillCount.txt com AllowRepeat (0/1), fallbacks Coin1 e Coin2 e SetOption em itens de recompensa, garantindo progresso infinito e auto-incremental de contagem de monstros (ex: 10, 20, 30...). [MuServer97K][Data\Custom\CustomMonsterKillCount.txt][97KOR]
 * Reformulacao do Sistema de Offline Attack: implementada validacao rigorosa de zonas de mapas permitidos (CustomAttackMapZone e CustomAttackMapList) com encerramento automatico se fora da area permitida, bloqueio de auto-ataque dentro de zonas seguras, registro confiavel de reconnect info no socket close e remocao segura de informacoes residuais no DataServer (GDReconnectInfoRemoveSend) ao encerrar. [GameServer][CustomAttack.h/.cpp][97KOR]

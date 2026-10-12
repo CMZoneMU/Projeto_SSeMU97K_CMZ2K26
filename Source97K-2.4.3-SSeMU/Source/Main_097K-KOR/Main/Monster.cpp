@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Offset.h"
 #include "Util.h"
+#include "LoadModels.h"
 
 void InitMonster() // OK
 {
@@ -22,13 +23,36 @@ void InitMonster() // OK
 
 DWORD CreateMonster(int index,int x,int y,int key) // OK
 {
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 107 (2.6.6) - Support monster index up to 512 from viewport packet
+	int highBit = 0;
+	_asm
+	{
+		push eax
+		mov eax, ebx
+		cmp eax, 0x00100000
+		jb SKIP_HIGH
+		cmp eax, 0x7FFFFFFF
+		ja SKIP_HIGH
+		movzx eax, byte ptr [ebx+9]
+		and eax, 0x03
+		mov highBit, eax
+	SKIP_HIGH:
+		pop eax
+	}
+
+	if(highBit != 0)
+	{
+		index |= (highBit << 8);
+	}
+
 	CUSTOM_MONSTER_INFO* lpInfo = gCustomMonster.GetInfoByIndex(index);
 
 	if(lpInfo != 0)
 	{
-		index += MONSTER_BASE_MODEL;
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 107 (2.6.6) - Safe model index above MAX_MODELS to prevent collision with items
+		int aIndex = MAX_MODELS + lpInfo->Index;
 
-		DWORD o = Models + (188 * index);
+		DWORD o = gLoadModels.GetModels() + (188 * aIndex);
 
 		if(lpInfo->Type == 0 || lpInfo->Type == 2)
 		{
@@ -38,7 +62,7 @@ DWORD CreateMonster(int index,int x,int y,int key) // OK
 
 				wsprintf(path,"Data\\%s",lpInfo->FolderPath);
 
-				AccessModel(index,path,lpInfo->ModelName,-1);
+				gLoadModels.MyAccessModel(aIndex,path,lpInfo->ModelName,-1);
 
 				for(int n = 0;n < *(short*)(o + 38);++n)
 				{
@@ -54,7 +78,7 @@ DWORD CreateMonster(int index,int x,int y,int key) // OK
 
 				wsprintf(path,"Data\\%s",lpInfo->FolderPath);
 
-				AccessModel(index,path,lpInfo->ModelName,-1);
+				gLoadModels.MyAccessModel(aIndex,path,lpInfo->ModelName,-1);
 
 				if(*(short*)(o + 36) > 0)
 				{
@@ -72,10 +96,10 @@ DWORD CreateMonster(int index,int x,int y,int key) // OK
 
 		if(*(short*)(o + 36) > 0)
 		{
-			OpenTexture(index,lpInfo->FolderPath,GL_NEAREST, GL_TRUE);
+			gLoadModels.MyOpenTexture(aIndex,lpInfo->FolderPath,GL_NEAREST, GL_TRUE);
 		}
 
-		DWORD pCharacter = ((DWORD(*)(int,int,BYTE,BYTE,float))0x0045BFA0)(key,((lpInfo->Type>1)?390:index),x,y,0.0f);
+		DWORD pCharacter = ((DWORD(*)(int,int,BYTE,BYTE,float))0x0045BFA0)(key,((lpInfo->Type>1)?390:aIndex),x,y,0.0f);
 
 		if(pCharacter)
 		{
@@ -119,5 +143,5 @@ DWORD CreateMonster(int index,int x,int y,int key) // OK
 		}
 	}
 
-	return ((DWORD(*)(int,int,int,int,int))0x0045CCF0)((unsigned char)index,x,y,key,0);
+	return ((DWORD(*)(int,int,int,int,int))0x0045CCF0)(index,x,y,key,0);
 }
