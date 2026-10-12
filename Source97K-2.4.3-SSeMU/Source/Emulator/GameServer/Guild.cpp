@@ -172,9 +172,10 @@ void CGuild::DGGuildNoticeRecv(SDHP_GUILD_NOTICE_RECV* lpMsg) // OK
 	{
 		memcpy(lpGuild->Notice,lpMsg->Notice,sizeof(lpGuild->Notice));
 
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Validacao de conexao ativa para envio de notice da guild
 		for(int n=0;n < MAX_GUILD_MEMBER;n++)
 		{
-			if(lpGuild->Member[n].IsValid() != 0)
+			if(lpGuild->Member[n].IsValid() != 0 && gObjIsConnectedGP(lpGuild->Member[n].Index) != 0)
 			{
 				gNotice.GCNoticeSend(lpGuild->Member[n].Index,2,0,0,0,0,0,"%s",lpGuild->Notice);
 			}
@@ -241,7 +242,8 @@ void CGuild::DGGuildMemberUpdateRecv(SDHP_GUILD_MEMBER_UPDATE_RECV* lpMsg) // OK
 
 			gGuildManager.ConnectUser(lpMsg->Name,lpObj->Name,lpObj->Index,lpMsg->Server);
 
-			if(strlen(lpObj->Guild->Notice) > 0)
+			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Validacao de conexao ativa antes de enviar notice de login
+			if(strlen(lpObj->Guild->Notice) > 0 && gObjIsConnectedGP(lpObj->Index) != 0)
 			{
 				gNotice.GCNoticeSend(lpObj->Index,2,0,0,0,0,0,"%s",lpObj->Guild->Notice);
 			}

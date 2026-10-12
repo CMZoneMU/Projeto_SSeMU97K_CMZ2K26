@@ -12,6 +12,7 @@
 #define MAX_ITEM_TYPE 32
 #define MAX_ITEM (MAX_ITEM_SECTION*MAX_ITEM_TYPE)
 #define MAX_ITEM_INFO 4
+#define MAX_ITEM_LEVEL 11
 
 #define GET_ITEM(x,y) (((x)*MAX_ITEM_TYPE)+(y))
 #define CHECK_ITEM(x) (((x)<0)?-1:((x)>=MAX_ITEM)?-1:x)

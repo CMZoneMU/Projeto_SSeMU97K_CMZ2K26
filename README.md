@@ -4,6 +4,15 @@
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
 ## IDE Antigravity: Organizar e Implementar as Correções.
 
+UPDATE CMZ 20 (3.2.0) 11-10-26 / SSeMU UPDATE 101 (2.6.1):
+* Correcao de Noticias de Guild no Desligamento: adicionadas validacoes gObjIsConnectedGP em DGGuildNoticeRecv e DGGuildMemberUpdateRecv para evitar envio de avisos a conexoes encerradas ao desligar o servidor. [GameServer][Guild.cpp][97KOR]
+* Otimizacao e Blindagem no QueryManager: tratamento de campos nulos SQL_NULL_DATA em GetAsString e GetAsBinary evitando leitura indevida ou corrupcao de buffer. [GameServer][QueryManager.cpp][97KOR]
+* Ampliacao de Opcoes de Anuncio no Chaos Mix (ChaosMixPlusItemAnnounce): suporte expandido as opcoes 1 a 4 em GameServerInfo - Common.dat, ServerInfo, User e ChaosBox para avisos locais e globais em itens +10 e +11 (+11 nivel maximo 97k). [GameServer][ChaosBox.cpp][User.h/.cpp][ServerInfo.h/.cpp][GameServerInfo - Common.dat][97KOR]
+* Reestruturacao de ItemDrop por Nivel VIP: eliminada a coluna redundante AccountLevel e implementadas as colunas DropRate_AL0 a DropRate_AL3 no ItemDrop.txt e GameServer, permitindo taxas por VIP sem multiplicacao de linhas. [GameServer][ItemDrop.h/.cpp][Data\Item\ItemDrop.txt][97KOR]
+* Reestruturacao de ExperienceTable por Nivel VIP: suporte a colunas ExperienceRate_AL0 a ExperienceRate_AL3 no ExperienceTable.txt e GameServer para taxas de XP distintas por nivel VIP. [GameServer][ExperienceTable.h/.cpp][Data\Util\ExperienceTable.txt][97KOR]
+* Sincronizacao de Requisitos no Clique Direito para Equipar (Client Main): validacao de Level, Forca, Agilidade e Energia do personagem (CHARACTER_ATTRIBUTE) contra atributos do item (ITEM_INFO) em ItemMove.cpp, impedindo equipamentos com atributos insuficientes. [Client97K][Main.dll][ItemMove.cpp]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 101 - Ver: 2.6.1) em stdafx.h e compilacoes Win32 em modo Release (GameServer97k.exe e Main.dll) concluidas com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][Main.dll][97KOR]
+
 UPDATE CMZ 19 (3.1.9) 11-10-26 / SSeMU UPDATE 100 (2.5.9 ~ 2.6.0):
 * Modo de PvP em Eventos Devil Square e Blood Castle (MapManager NonPK Opcao 3): implementada opcao NonPK = 3 no MapManager.txt permitindo combate entre jogadores (PvP) durante o andamento dos eventos Devil Square (DS_STATE_START) e Blood Castle (BC_STATE_START), mantendo a imunidade de NonPK no mapa durante periodos fora de evento. [GameServer][MapManager.h/.cpp][Attack.cpp][Data\MapManager.txt][97KOR]
 * Adaptacao Estrita a Versao 97k (Isolamento de Modulos S1~S6): desconsiderados modulos incompativeis com a versao 97k (GameServerCS inexistente, ReconnectHelper e ReconnectStore inexistentes na 97k, e eventos Raklion Boss, Chaos Castle e Illusion Temple ausentes na versao 97k original). [GameServer][97KOR]

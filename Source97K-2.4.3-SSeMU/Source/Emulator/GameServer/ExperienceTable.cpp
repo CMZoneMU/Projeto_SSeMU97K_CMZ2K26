@@ -69,7 +69,14 @@ void CExperienceTable::Load(char* path) // OK
 
 			info.MaxMasterReset = lpMemScript->GetAsNumber();
 
-			info.ExperienceRate = lpMemScript->GetAsNumber();
+			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Leitura do ExperienceRate por nivel VIP (0~3)
+			info.ExperienceRate[0] = lpMemScript->GetAsNumber();
+
+			info.ExperienceRate[1] = lpMemScript->GetAsNumber();
+
+			info.ExperienceRate[2] = lpMemScript->GetAsNumber();
+
+			info.ExperienceRate[3] = lpMemScript->GetAsNumber();
 
 			this->m_ExperienceTableInfo.push_back(info);
 		}
@@ -116,7 +123,8 @@ int CExperienceTable::GetExperienceRate(LPOBJ lpObj) // OK
 			continue;
 		}
 
-		return it->ExperienceRate;
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Retorna ExperienceRate baseado no AccountLevel do jogador
+		return it->ExperienceRate[lpObj->AccountLevel];
 	}
 
 	return 100;

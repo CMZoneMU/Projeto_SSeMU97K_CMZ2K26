@@ -223,11 +223,12 @@ __int64 CQueryManager::GetAsInteger64(char* ColName) // OK
 	}
 }
 
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Tratamento de SQL_NULL_DATA em GetAsString
 void CQueryManager::GetAsString(char* ColName,char* OutBuffer,int OutBufferSize) // OK
 {
 	int index = this->FindIndex(ColName);
 
-	if(index == -1)
+	if(index == -1 || this->m_SQLDataLen[index] == SQL_NULL_DATA)
 	{
 		memset(OutBuffer,0,OutBufferSize);
 	}
@@ -237,17 +238,18 @@ void CQueryManager::GetAsString(char* ColName,char* OutBuffer,int OutBufferSize)
 	}
 }
 
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Tratamento de SQL_NULL_DATA em GetAsBinary
 void CQueryManager::GetAsBinary(char* ColName,BYTE* OutBuffer,int OutBufferSize) // OK
 {
 	int index = this->FindIndex(ColName);
 
-	if(index == -1)
+	if(index == -1 || this->m_SQLDataLen[index] == SQL_NULL_DATA)
 	{
 		memset(OutBuffer,0,OutBufferSize);
 	}
 	else
 	{
-		this->ConvertStringToBinary(this->m_SQLData[index],sizeof(this->m_SQLData[index]),OutBuffer,OutBufferSize);
+		this->ConvertStringToBinary(this->m_SQLData[index],this->m_SQLDataLen[index],OutBuffer,OutBufferSize);
 	}
 }
 

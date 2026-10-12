@@ -808,7 +808,8 @@ void gObjCheckSelfDefense(LPOBJ lpObj,int aTargetIndex);
 void gObjTimeCheckSelfDefense(LPOBJ lpObj);
 void gObjSetPosition(int aIndex,int x,int y);
 void gObjUseDrink(LPOBJ lpObj,int level);
-void gObjCustomLogPlusChaosMix(LPOBJ lpObj,int type,int index);
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - Assinatura ampliada para nivel e index do item
+void gObjCustomLogPlusChaosMix(LPOBJ lpObj,int index,int level);
 bool gObjCheckAutoParty(LPOBJ lpObj,LPOBJ lpTarget);
 void gObjEventEntrySaveSend(LPOBJ lpObj,int type);
 

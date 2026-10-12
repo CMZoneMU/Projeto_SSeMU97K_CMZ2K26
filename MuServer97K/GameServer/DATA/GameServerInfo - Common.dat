@@ -69,6 +69,7 @@ CheckMoveHackAction = 0
 
 ;==================================================
 ; Common Settings
+; ChaosMixPlusItemAnnounce: 0: Disabled, 1: Server Only Max Level, 2: Global Max Level, 3: Server Only All Levels, 4: Global All Levels
 ;==================================================
 ChaosMixPlusItemAnnounce = 0
 MaxItemOption = 6

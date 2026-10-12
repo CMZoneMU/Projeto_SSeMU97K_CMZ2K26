@@ -14,7 +14,8 @@ struct EXPERIENCE_TABLE_INFO
 	int MaxReset;
 	int MinMasterReset;
 	int MaxMasterReset;
-	int ExperienceRate;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 101 (2.6.1) - ExperienceRate por nivel VIP (MAX_ACCOUNT_LEVEL)
+	int ExperienceRate[MAX_ACCOUNT_LEVEL];
 };
 
 class CExperienceTable
