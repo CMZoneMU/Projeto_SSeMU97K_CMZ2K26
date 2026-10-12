@@ -70,7 +70,8 @@ void CCustomAttack::MainProc(LPOBJ lpObj) // OK
 				return;
 			}
 
-			if(lpObj->SkillSummonPartyTime > 0 && gViewport.CheckViewportObjectPosition(lpObj->Index,lpObj->Attack.StartMap,lpObj->Attack.StartX,lpObj->Attack.StartY,10) == 0)
+			// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 102 (2.6.2) - Check viewport position on offline attack
+			if(gViewport.CheckViewportObjectPosition(lpObj->Index,lpObj->Attack.StartMap,lpObj->Attack.StartX,lpObj->Attack.StartY,10) == 0)
 			{
 				this->AttackOfflineClose(lpObj);
 				return;

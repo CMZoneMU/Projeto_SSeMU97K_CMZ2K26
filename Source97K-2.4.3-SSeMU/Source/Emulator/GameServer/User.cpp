@@ -2141,6 +2141,14 @@ int gObjMoveGate(int aIndex,int gate) // OK
 
 	gMove.GCTeleportSend(aIndex,gate,lpObj->Map,(BYTE)lpObj->X,(BYTE)lpObj->Y,lpObj->Dir);
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 102 (2.6.2) - Update offline attack coords on move
+	if(lpObj->Attack.Started != 0)
+	{
+		lpObj->Attack.StartMap = map;
+		lpObj->Attack.StartX = x;
+		lpObj->Attack.StartY = y;
+	}
+
 	gObjViewportListProtocolCreate(lpObj);
 
 	lpObj->RegenMapNumber = lpObj->Map;
@@ -2217,6 +2225,14 @@ void gObjTeleport(int aIndex,int map,int x,int y) // OK
 	gObjClearViewport(lpObj);
 
 	gMove.GCTeleportSend(aIndex,1,lpObj->Map,(BYTE)lpObj->X,(BYTE)lpObj->Y,lpObj->Dir);
+
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 102 (2.6.2) - Update offline attack coords on move
+	if(lpObj->Attack.Started != 0)
+	{
+		lpObj->Attack.StartMap = map;
+		lpObj->Attack.StartX = x;
+		lpObj->Attack.StartY = y;
+	}
 
 	gObjViewportListProtocolCreate(lpObj);
 
