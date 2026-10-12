@@ -4,6 +4,12 @@
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
 ## IDE Antigravity: Organizar e Implementar as Correções.
 
+UPDATE CMZ 19 (3.1.9) 11-10-26 / SSeMU UPDATE 100 (2.5.9 ~ 2.6.0):
+* Modo de PvP em Eventos Devil Square e Blood Castle (MapManager NonPK Opcao 3): implementada opcao NonPK = 3 no MapManager.txt permitindo combate entre jogadores (PvP) durante o andamento dos eventos Devil Square (DS_STATE_START) e Blood Castle (BC_STATE_START), mantendo a imunidade de NonPK no mapa durante periodos fora de evento. [GameServer][MapManager.h/.cpp][Attack.cpp][Data\MapManager.txt][97KOR]
+* Adaptacao Estrita a Versao 97k (Isolamento de Modulos S1~S6): desconsiderados modulos incompativeis com a versao 97k (GameServerCS inexistente, ReconnectHelper e ReconnectStore inexistentes na 97k, e eventos Raklion Boss, Chaos Castle e Illusion Temple ausentes na versao 97k original). [GameServer][97KOR]
+* Validacao e Auditoria de Mensagens e Itens: auditado arquivo Message.txt (mensagem 153 para desconexao de conta ja conectada em Eng, Spn e Por) e validadas as colunas HaveSerial e Drop no Item.txt da versao 97k. [GameServer][Data\Lang\][Data\Item\Item.txt][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 100 - Ver: 2.5.9) em stdafx.h e compilacao Win32 em modo 0.97K KOR concluida com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][97KOR]
+
 UPDATE CMZ 17 ~ 18 (3.1.7 - 3.1.8) 11-10-26 / CUSTOM CHANGE CLASS INTERFACE & SYSTEM V1 FINISH:
 * Sistema CustomClass V1 - Interface Nativa OpenGL, Texturas OZT 32-bit e Camadas de Seguranca: conclusao e integracao completa do sistema de troca de classe in-game (Blade Knight, Soul Master, Muse Elf e Magic Gladiator), unificando interface grafica, protocolo de rede, recalculo matematico de atributos e protecoes ativas no Client e GameServer. [Client97K][Main.dll][GameServer][MuServer97K][97KOR]
   - Interface Grafica OpenGL e Docking Inteligente: janela de 230x270 com textura de pedra classica (back_middle.jpg), ancorada automaticamente a esquerda em X = 210.0f com Janela C aberta e centralizada em X = 205.0f com Janela C fechada, livre de bordas pretas em resolucoes widescreen. [Main.dll][CustomChangeClass.cpp]

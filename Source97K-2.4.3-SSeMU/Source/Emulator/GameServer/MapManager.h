@@ -37,6 +37,8 @@ public:
 	int IsValidMap(int index);
 	int GetMapNonPK(int index);
 	int GetMapNonOutlaw(int index);
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 100 (2.5.9) - Opcao de PvP em Eventos via MapManager
+	int GetMapEventPvP(int index);
 	int GetMapViewRange(int index);
 	int GetMapExperienceRate(int index);
 	int GetMapItemDropRate(int index);
