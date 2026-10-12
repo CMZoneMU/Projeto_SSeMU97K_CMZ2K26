@@ -153,11 +153,6 @@ GuildWarWinnerScore1 = 3
 GuildWarWinnerScore2 = 2
 GuildWarWinnerScore3 = 1
 
-;==================================================
-; Multiplier Settings
-;==================================================
-ExperienceMultiplierConstA = 10
-ExperienceMultiplierConstB = 1000
 
 ;==================================================
 ; Experience Settings

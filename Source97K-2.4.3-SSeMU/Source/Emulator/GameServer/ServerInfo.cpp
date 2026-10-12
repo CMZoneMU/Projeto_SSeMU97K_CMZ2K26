@@ -466,11 +466,16 @@ void CServerInfo::ReadStartupInfo(char* section,char* path) // OK
 	this->m_WriteScriptLog = GetPrivateProfileInt(section,"WriteScriptLog",0,path);
 	this->m_WritePenaltyLog = GetPrivateProfileInt(section,"WritePenaltyLog",0,path);
 
-	this->m_ExperienceMultiplierConstA = GetPrivateProfileInt(section,"ExperienceMultiplierConstA",0,path);
-	this->m_ExperienceMultiplierConstB = GetPrivateProfileInt(section,"ExperienceMultiplierConstB",0,path);
-
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 107 (2.6.6) - Automatic ExperienceMultiplierConst calculation
 	this->m_MaxLevel = GetPrivateProfileInt(section,"MaxLevel",0,path);
-	this->m_MaxLevel = ((this->m_MaxLevel > MAX_CHARACTER_LEVEL) ? MAX_CHARACTER_LEVEL : this->m_MaxLevel);
+	this->m_MaxLevel = ((this->m_MaxLevel<1)?1:((this->m_MaxLevel>MAX_CHARACTER_LEVEL)?MAX_CHARACTER_LEVEL:this->m_MaxLevel));
+
+	this->m_ExperienceMultiplierConstA = ((this->m_MaxLevel>=400)?(10+((2-10)*(this->m_MaxLevel-400))/600):10);
+	this->m_ExperienceMultiplierConstB = ((this->m_MaxLevel>=400)?(1000+((5-1000)*(this->m_MaxLevel-400))/600):1000);
+
+	this->m_PetMaxLevel = GetPrivateProfileInt(section,"MaxPetLevel",0,path);
+	this->m_PetMaxLevel = ((this->m_PetMaxLevel<50)?50:((this->m_PetMaxLevel>MAX_CHARACTER_LEVEL)?MAX_CHARACTER_LEVEL:this->m_PetMaxLevel));
+	this->m_PetExperienceMultiplierConstA = (10+((2-10)*(this->m_PetMaxLevel-50))/950);
 }
 
 void CServerInfo::ReadChaosMixInfo(char* section,char* path) // OK

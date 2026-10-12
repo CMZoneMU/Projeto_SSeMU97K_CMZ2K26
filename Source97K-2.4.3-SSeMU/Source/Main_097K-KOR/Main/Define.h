@@ -37,7 +37,7 @@ enum eModelNumbers
 	MODEL_EVENT = 947,
 };
 
-// Update 21 Kayito -> 97K - Expansão de Texturas e Modelos (Zeus)
+// Update 21 Kayito -> 97K - Expansao de Texturas e Modelos (Zeus)
 #define MAX_TEXTURE 5500
 #define PLUS_TEXTURE 5500
 #define TOTAL_TEXTURE (MAX_TEXTURE + PLUS_TEXTURE)
@@ -64,6 +64,9 @@ struct BMD
 	BYTE Data[188];
 };
 // Fim Update 21 Kayito -> 97K
+
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 107 (2.6.6) - Expand MonsterIndex up to 512
+#define MAX_MONSTER 512
 
 enum eMapNumber
 {

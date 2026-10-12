@@ -757,7 +757,8 @@ void CViewport::GCViewportMonsterSend(int aIndex) // OK
 			}
 		}
 
-		info.type = (BYTE)lpTarget->Class;
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 107 (2.6.6) - Support monster index up to 512
+		info.type = (BYTE)(lpTarget->Class & 0xFF);
 
 		info.ViewSkillState = lpTarget->ViewSkillState;
 
@@ -767,7 +768,7 @@ void CViewport::GCViewportMonsterSend(int aIndex) // OK
 		info.tx = (BYTE)lpTarget->TX;
 		info.ty = (BYTE)lpTarget->TY;
 
-		info.DirAndPkLevel = (lpTarget->Dir*16);
+		info.DirAndPkLevel = (lpTarget->Dir*16) | ((lpTarget->Class > 255) ? ((lpTarget->Class >> 8) & 0x03) : 0);
 
 		memcpy(&send[size],&info,sizeof(info));
 		size += sizeof(info);
@@ -834,7 +835,8 @@ void CViewport::GCViewportSummonSend(int aIndex) // OK
 			info.index[0] |= 0x80;
 		}
 
-		info.type = (BYTE)lpTarget->Class;
+		// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 107 (2.6.6) - Support monster index up to 512
+		info.type = (BYTE)(lpTarget->Class & 0xFF);
 
 		info.ViewSkillState = lpTarget->ViewSkillState;
 
@@ -844,7 +846,7 @@ void CViewport::GCViewportSummonSend(int aIndex) // OK
 		info.tx = (BYTE)lpTarget->TX;
 		info.ty = (BYTE)lpTarget->TY;
 
-		info.DirAndPkLevel = lpTarget->Dir*16;
+		info.DirAndPkLevel = (lpTarget->Dir*16) | ((lpTarget->Class > 255) ? ((lpTarget->Class >> 8) & 0x03) : 0);
 
 		memcpy(info.name,gObj[lpTarget->SummonIndex].Name,sizeof(info.name));
 
