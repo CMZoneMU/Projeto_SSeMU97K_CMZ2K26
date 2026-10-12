@@ -147,6 +147,19 @@ int CMapManager::GetMapNonOutlaw(int index) // OK
 	return 0;
 }
 
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 100 (2.5.9) - Opcao de PvP em Eventos via MapManager (NonPK >= 3)
+int CMapManager::GetMapEventPvP(int index) // OK
+{
+	std::map<int,MAP_MANAGER_INFO>::iterator it = this->m_MapManagerInfo.find(index);
+
+	if(it != this->m_MapManagerInfo.end())
+	{
+		return ((it->second.NonPK == -1) ? 0 : ((it->second.NonPK >= 3) ? 1 : 0));
+	}
+
+	return 0;
+}
+
 int CMapManager::GetMapViewRange(int index) // OK
 {
 	std::map<int,MAP_MANAGER_INFO>::iterator it = this->m_MapManagerInfo.find(index);

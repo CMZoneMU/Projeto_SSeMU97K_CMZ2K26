@@ -5,9 +5,11 @@
 #include "stdafx.h"
 #include "Attack.h"
 #include "BattleSoccer.h"
+#include "BloodCastle.h"
 #include "CustomArena.h"
 #include "CustomAttack.h"
 #include "DamageTable.h"
+#include "DevilSquare.h"
 #include "EffectManager.h"
 #include "GuildManager.h"
 #include "HackSkillSpeedCheck.h"
@@ -886,14 +888,15 @@ bool CAttack::CheckPlayerTarget(LPOBJ lpObj,LPOBJ lpTarget) // OK
 		return ((gCustomArena.CheckPlayerTarget(lpObj,lpTarget)==0)?0:1);
 	}
 
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 100 (2.5.9) - Validacao de PvP em Devil Square e Blood Castle via MapManager (NonPK 3)
 	if(DS_MAP_RANGE(lpObj->Map) != 0 && DS_MAP_RANGE(lpTarget->Map) != 0)
 	{
-		return 0;
+		return (lpObj->EventFlag == 1 && gDevilSquare.GetState(lpObj->EventLevel) == DS_STATE_START) ? ((gMapManager.GetMapEventPvP(lpObj->Map) == 0) ? 0 : 1) : 0;
 	}
 
 	if(BC_MAP_RANGE(lpObj->Map) != 0 && BC_MAP_RANGE(lpTarget->Map) != 0)
 	{
-		return 0;
+		return (lpObj->EventFlag == 2 && gBloodCastle.GetState(lpObj->EventLevel) == BC_STATE_START) ? ((gMapManager.GetMapEventPvP(lpObj->Map) == 0) ? 0 : 1) : 0;
 	}
 
 	if(lpObj->Level <= 5 || lpTarget->Level <= 5)
