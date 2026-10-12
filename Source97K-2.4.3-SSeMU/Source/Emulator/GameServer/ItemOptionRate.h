@@ -4,7 +4,8 @@
 
 #pragma once
 
-#define MAX_ITEM_OPTION0_RATE 12
+// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 102 (2.6.2) - Support Level 12 and 13 in ItemOptionRate
+#define MAX_ITEM_OPTION0_RATE 14
 #define MAX_ITEM_OPTION1_RATE 2
 #define MAX_ITEM_OPTION2_RATE 2
 #define MAX_ITEM_OPTION3_RATE 8

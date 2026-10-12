@@ -3,6 +3,12 @@
 ## Créditos Source: SSeMU SetecSoft Development  
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
 ## IDE Antigravity: Organizar e Implementar as Correções.
+UPDATE CMZ 21 (3.2.1) 12-10-26 / SSeMU UPDATE 102 (2.6.2):
+* Ajuste de Tolerancia HackPacketCheck Pacote 24: ajustado limite do pacote nº 24 em HackPacketCheck.txt para MaxDelay 1000, MinCount 40 e MaxCount 50, prevenindo reconexoes e falsos positivos durante alta densidade de ataque nos eventos Blood Castle e Devil Square. [MuServer97K][Data\Hack\HackPacketCheck.txt][97KOR]
+* Suporte a Itens +12 e +13 em ItemOptionRate (MAX_ITEM_OPTION0_RATE 14): ampliado limite de opcoes de nivel para 14 em ItemOptionRate.h e adicionadas colunas Rate12 e Rate13 e entradas 23 e 24 na Secao 0 de ItemOptionRate.txt para compatibilidade com itens refinados no servidor. [GameServer][ItemOptionRate.h][Data\Item\ItemOptionRate.txt][97KOR]
+* Padronizacao e Requisitos de Skills (SkillList.txt): reorganizado alinhamento tabular e preenchidos requisitos oficiais de Nivel (ReqLevel) e Energia (ReqEnergy) para magias de DW, DK, FE e MG na versao 97k. [MuServer97K][Data\Skill\SkillList.txt][97KOR]
+* Sincronizacao de Coordenadas de Personagens Offline (User.cpp / CustomAttack.cpp): atualizadas coordenadas de origem (StartMap, StartX, StartY) ao movimentar personagens offline em gObjMoveGate e gObjTeleport, e ajustada checagem de viewport em CustomAttack::MainProc, impedindo dessincronizacoes, ataques a distancia incorreta e congelamento de sessoes offline. [GameServer][User.cpp][CustomAttack.cpp][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 102 - Ver: 2.6.2) em stdafx.h e compilacao Win32 em modo Release (GameServer97k.exe) concluida com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][97KOR]
 
 UPDATE CMZ 20 (3.2.0) 11-10-26 / SSeMU UPDATE 101 (2.6.1):
 * Correcao de Noticias de Guild no Desligamento: adicionadas validacoes gObjIsConnectedGP em DGGuildNoticeRecv e DGGuildMemberUpdateRecv para evitar envio de avisos a conexoes encerradas ao desligar o servidor. [GameServer][Guild.cpp][97KOR]
