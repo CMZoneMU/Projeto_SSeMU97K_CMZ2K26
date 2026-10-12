@@ -20,6 +20,8 @@ struct SHOP_MANAGER_INFO
 	int Dir;
 	int Enable[MAX_ACCOUNT_LEVEL];
 	int GameMasterLevel;
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Support CoinShopType
+	int CoinShopType;
 	CShop Shop;
 };
 
@@ -32,7 +34,8 @@ public:
 	void ReloadShop();
 	void ReloadShopInterface();
 	short GetShopNumber(int MonsterClass,int MapNumber,int PosX,int PosY);
-	bool GetItemByIndex(int index,CItem* lpItem,int slot);
+	// Update SSeMU 92 2.4.9 -> 97K SSeMU Update 109 (2.6.7) - Support CoinShopType output
+	bool GetItemByIndex(int index,CItem* lpItem,int slot,int* type = 0);
 	long GetItemCountByIndex(int index);
 	bool CheckShopAccountLevel(LPOBJ lpNpc,LPOBJ lpObj);
 	bool CheckShopGameMasterLevel(LPOBJ lpNpc,LPOBJ lpObj);

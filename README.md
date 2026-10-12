@@ -3,6 +3,12 @@
 ## Créditos Source: SSeMU SetecSoft Development  
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
 
+UPDATE CMZ 28 (3.2.8) 12-10-26 / SSeMU UPDATE 109 (2.6.7):
+* Preco de CoinValue Condicionado a Lojas com CoinType Ativo (ShopManager.h/.cpp / ItemManager.cpp): implementado suporte a CoinShopType na leitura de Data\ShopManager.txt, garantindo que o preco especial de CoinValue somente seja cobrado se a loja estiver configurada como CoinShop (CoinType 1~3), mantendo funcionamento estrito em Zen tradicional para lojas padrao (CoinType = 0). [GameServer][ShopManager.h/.cpp][ItemManager.cpp][97KOR]
+* Blindagem contra Crashes em DiePenalty (DiePenalty.cpp): adicionadas validacoes rigorosas de limites de memoria para AccountLevel (CHECK_RANGE MAX_ACCOUNT_LEVEL), mapa valido (CHECK_RANGE MAX_MAP e IsValidMap) e nivel do usuario (Level > 1 e Level <= MAX_CHARACTER_LEVEL) antes de indexar gLevelExperience, eliminando falhas de acesso e crashes decorrentes de penalidades. [GameServer][DiePenalty.cpp][97KOR]
+* Seguranca e Sanitizacao de Protocolo (Protocol.cpp): reforcada a funcao ProtocolCore com verificacoes estritas de limites de buffer e validade do usuario contra pacotes corrompidos e tentativas de injecao via protocolo de rede. [GameServer][Protocol.cpp][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 109 - Ver: 2.6.7) em stdafx.h e compilacao Win32 em modo Release (GameServer97k.exe) concluida com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][97KOR]
+
 UPDATE CMZ 27 (3.2.7) 12-10-26 / SSeMU UPDATE 108 (2.6.6-1):
 * Renomeacao e Aplicacao de DiePenalty por Mapa (MapManager.txt / MapManager.h/.cpp): renomeada coluna PKItemDrop para DiePenalty em Data\MapManager.txt e atualizados membros e metodos do GameServer (GetMapDiePenalty) integrando com CDiePenalty::UserDieProc para controle por mapa. [GameServer][MapManager.h/.cpp][DiePenalty.cpp][Data\MapManager.txt][97KOR]
 * Correcao de Visualizacao e Glow do Item 31 em Todas as Categorias (ObjectManager.cpp): reparada a verificacao em CharacterMakePreviewCharSet substituindo a condicao excludente de TempInventory por lpObj->Inventory[n].IsItem() != 0, permitindo que itens com indice 31 (armas, escudos, asas e armaduras) recebam calculo de nivel, brilho (+glow) e novas opcoes visuais sem conflito. [GameServer][ObjectManager.cpp][97KOR]
