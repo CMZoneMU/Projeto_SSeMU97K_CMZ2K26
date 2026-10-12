@@ -2,7 +2,12 @@
 ## Inicio: 17/08/2026
 ## Créditos Source: SSeMU SetecSoft Development  
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
-## IDE Antigravity: Organizar e Implementar as Correções.
+UPDATE CMZ 22 (3.2.2) 12-10-26 / SSeMU UPDATE 103 (2.6.3):
+* Opcao SkillRequiresSwitch (GameServerInfo - Skill.dat): adicionada configuracao SkillRequiresSwitch (0: Requisitos inativos / 1: Requisitos ativos) em GameServerInfo - Skill.dat e ServerInfo.h/.cpp, permitindo escolher se o uso de magias deve validar nivel e energia configurados no SkillList.txt. [GameServer][ServerInfo.h/.cpp][SkillManager.cpp][GameServer\DATA\GameServerInfo - Skill.dat][97KOR]
+* Otimizacao de Performance de HackPacketCheck: busca direta em memoria com complexidade O(1) auditada e garantida para inspecao instantanea de pacotes recebidos sem overhead de I/O. [GameServer][HackPacketCheck.h/.cpp][97KOR]
+* Auditoria e Otimizacao do Sistema de Quests: validada arquitetura com vetores dinamicos e mascaras de bits gQuestBitMask mantendo processamento eficiente de estados de missoes. [GameServer][Quest.h/.cpp][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 103 - Ver: 2.6.3) em stdafx.h e compilacao Win32 em modo Release (GameServer97k.exe) concluida com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][97KOR]
+
 UPDATE CMZ 21 (3.2.1) 12-10-26 / SSeMU UPDATE 102 (2.6.2):
 * Ajuste de Tolerancia HackPacketCheck Pacote 24: ajustado limite do pacote nº 24 em HackPacketCheck.txt para MaxDelay 1000, MinCount 40 e MaxCount 50, prevenindo reconexoes e falsos positivos durante alta densidade de ataque nos eventos Blood Castle e Devil Square. [MuServer97K][Data\Hack\HackPacketCheck.txt][97KOR]
 * Suporte a Itens +12 e +13 em ItemOptionRate (MAX_ITEM_OPTION0_RATE 14): ampliado limite de opcoes de nivel para 14 em ItemOptionRate.h e adicionadas colunas Rate12 e Rate13 e entradas 23 e 24 na Secao 0 de ItemOptionRate.txt para compatibilidade com itens refinados no servidor. [GameServer][ItemOptionRate.h][Data\Item\ItemOptionRate.txt][97KOR]
