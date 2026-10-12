@@ -2,6 +2,12 @@
 ## Inicio: 17/08/2026
 ## Créditos Source: SSeMU SetecSoft Development  
 ## Créditos MuServer e Cliente: SSeMU SetecSoft Development
+UPDATE CMZ 23 (3.2.3) 12-10-26 / SSeMU UPDATE 104 (2.6.4):
+* Calibracao e Correcao de Monstros de Blood Castle (MonsterList.txt): corrigidos atributos oficiais de monstros de Blood Castle 1 a 6 (IDs 84~98 e 111~130) em Data\Monster\MonsterList.txt, ajustando HP, dano min/max, defesa, taxas de ataque e niveis de acordo com o balanceamento oficial da SSeMU, adaptado para as 28 colunas padrao da versao 97k (removidas colunas excedentes de Season 4). [MuServer97K][Data\Monster\MonsterList.txt][97KOR]
+* Suporte ANSI / UTF-8 em Leitores e Scripts LUA: validada compatibilidade completa com arquivos ANSI e UTF-8 (com e sem BOM 0xEF, 0xBB, 0xBF) em CMemScript e no interpretador LUA nativo da 97k. [GameServer][MemScript.cpp][LuaFunction.cpp][97KOR]
+* Isolamento de Modulos Incompativeis (Regra 12): desconsiderados modulos MHPServer (obsoleto e inexistente na 97k) e SShield Protect (antihack comercial S4+) mantendo a integridade da versao 97k. [GameServer][97KOR]
+* Atualizacao de Titulo e Compilacao Release: macro GAMESERVER_VERSION atualizada para (Update 104 - Ver: 2.6.4) em stdafx.h e compilacao Win32 em modo Release (GameServer97k.exe) concluida com 0 erros. [GameServer][stdafx.h][GameServer97k.exe][97KOR]
+
 UPDATE CMZ 22 (3.2.2) 12-10-26 / SSeMU UPDATE 103 (2.6.3):
 * Opcao SkillRequiresSwitch (GameServerInfo - Skill.dat): adicionada configuracao SkillRequiresSwitch (0: Requisitos inativos / 1: Requisitos ativos) em GameServerInfo - Skill.dat e ServerInfo.h/.cpp, permitindo escolher se o uso de magias deve validar nivel e energia configurados no SkillList.txt. [GameServer][ServerInfo.h/.cpp][SkillManager.cpp][GameServer\DATA\GameServerInfo - Skill.dat][97KOR]
 * Otimizacao de Performance de HackPacketCheck: busca direta em memoria com complexidade O(1) auditada e garantida para inspecao instantanea de pacotes recebidos sem overhead de I/O. [GameServer][HackPacketCheck.h/.cpp][97KOR]
